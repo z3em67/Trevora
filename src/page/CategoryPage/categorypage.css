@@ -1,0 +1,5 @@
+.products{padding:8px 0 56px;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:20px}
+.category_products{padding-top:16px}
+.category_products .top_slide{margin:24px 0 24px}
+.category_products>.container>p,.category_products>.container>.empty_state{margin-top:24px}
+@media (max-width:640px){.products{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}}

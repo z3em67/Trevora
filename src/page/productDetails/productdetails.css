@@ -1,0 +1,33 @@
+.item_details{padding:32px 0 24px}
+.item_details .container{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:start}
+.imgs_item .big_img{display:grid;place-items:center;aspect-ratio:1/1;background:var(--tile);border-radius:var(--r);padding:32px;border:1px solid var(--line)}
+.imgs_item .big_img img{max-height:100%;width:auto;object-fit:contain;mix-blend-mode:multiply}
+.sm_img{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.img_div_sm{width:76px;height:76px;padding:8px;background:var(--tile);border:2px solid transparent;border-radius:var(--r-sm);opacity:.6;transition:.2s}
+.img_div_sm:hover{opacity:1}
+.img_div_sm.active{border-color:var(--primary);opacity:1}
+.img_div_sm img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}
+.details_item{display:flex;flex-direction:column;align-items:flex-start;gap:16px}
+.details_item .eyebrow{text-transform:uppercase}
+.details_item .name{font-size:clamp(1.7rem,1.2rem + 1.6vw,2.6rem);text-transform:uppercase;letter-spacing:-.04em}
+.rating_row{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.8125rem;color:var(--muted)}
+.rating_row .star,.rating_row .star svg{width:18px;height:18px}
+.price_row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);width:100%}
+.price_row .price{font-family:var(--mono);font-size:2.1rem;font-weight:700;color:var(--primary);letter-spacing:-.03em}
+.price_row s{font-family:var(--mono);color:var(--muted);font-size:1.0625rem}
+.desc{line-height:1.7;color:var(--text)}
+.meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px;font-size:.875rem;color:var(--muted)}
+.meta strong{color:var(--ink);font-weight:600}
+.stock{font-family:var(--mono);font-size:.8125rem;font-weight:500;color:var(--warning)}
+.buy_row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:4px}
+.buy_row .quantity_control{margin:0;height:52px}
+.buy_row .quantity_control button{width:44px;height:50px}
+.buy_row .btn-icon{width:52px;height:52px;font-size:20px}
+.assurances{width:100%;display:grid;gap:10px;padding:18px;margin-top:8px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);font-size:.9375rem;color:var(--text)}
+.assurances li{display:flex;align-items:center;gap:12px}
+.assurances svg{color:var(--primary);font-size:20px;flex:none}
+.loading_Item .imgs_item{aspect-ratio:1/1}
+.loading_Item .details_item h5{height:28px;width:100%}
+.loading_Item .details_item h5:first-child{width:60%;height:40px}
+@media (max-width:900px){.item_details .container{grid-template-columns:1fr;gap:28px}.item_details{padding-top:16px}}
+@media (max-width:480px){.buy_row .btn-lg{flex:1}.img_div_sm{width:60px;height:60px}}

@@ -1,0 +1,62 @@
+header{position:sticky;top:0;z-index:1000;background:rgba(255,255,255,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line);box-shadow:0 1px 8px rgba(30,64,175,.06)}
+.top_header .container{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:32px;padding:14px 0}
+.top_header .logo{display:inline-flex}
+.top_header .serachBox_Contaienr{max-width:620px;width:100%;margin:0 auto}
+.top_header .search_box{display:flex;align-items:center;height:46px;background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r-sm);padding:0 0 0 16px;transition:.2s}
+.top_header .search_box:focus-within{border-color:var(--primary);box-shadow:0 0 0 3px var(--ring)}
+.top_header .search_box input{flex:1;min-width:0;height:100%;background:transparent;border:0;padding:0;box-shadow:none!important}
+.top_header .search_box button{width:46px;height:100%;background:var(--primary);color:var(--primary-ink);font-size:18px;display:grid;place-items:center;border-radius:0 2px 2px 0;transition:background .2s}
+.top_header .search_box button:hover{background:var(--primary-hover)}
+.header_icons{display:flex;gap:6px}
+.header_icons .icon a{position:relative;width:44px;height:44px;border:1px solid transparent;border-radius:var(--r-sm);display:grid;place-items:center;font-size:21px;color:var(--ink);transition:.2s}
+.header_icons .icon a:hover{border-color:var(--primary);color:var(--primary)}
+.header_icons .count{position:absolute;top:1px;right:-3px;min-width:18px;height:18px;padding:0 4px;border-radius:2px;background:var(--primary);color:var(--primary-ink);font-family:var(--mono);font-size:10px;font-weight:700;line-height:18px;text-align:center}
+.btm_header{background:#eff6ff;border-top:1px solid var(--line)}
+.btm_header>.container{display:flex;align-items:center;justify-content:space-between;height:50px;position:relative}
+.btm_header .nav{display:flex;align-items:center;gap:28px;height:100%}
+.category_nav{position:relative}
+.category_btn{display:flex;align-items:center;gap:10px;height:34px;padding:0 14px;border-radius:var(--r-sm);border:1px solid var(--primary);color:var(--primary);cursor:pointer;transition:.2s}
+.category_btn:hover,.category_nav.open .category_btn{background:var(--primary);color:var(--primary-ink)}
+.category_btn p{color:inherit;font-family:var(--mono);font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+.category_btn svg:last-child{transition:transform .2s}
+.category_nav.open .category_btn svg:last-child{transform:rotate(180deg)}
+.category_nav_list{position:absolute;top:calc(100% + 12px);left:0;width:480px;max-height:400px;overflow-y:auto;display:grid;grid-template-columns:1fr 1fr;gap:1px;padding:6px;background:var(--surface);border:1px solid var(--line-strong);border-top:2px solid var(--primary);border-radius:var(--r-sm);box-shadow:var(--sh-md);opacity:0;visibility:hidden;transform:translateY(-6px);transition:.2s var(--ease);z-index:20}
+.category_nav_list.active{opacity:1;visibility:visible;transform:none}
+.category_nav_list a{padding:9px 12px;border-radius:2px;font-size:.875rem;color:var(--text);transition:.15s}
+.category_nav_list a:hover{background:var(--primary);color:var(--primary-ink)}
+.nav_links{display:flex;height:100%;gap:2px}
+.nav_links li{display:flex;height:100%}
+.nav_links li a{display:flex;align-items:center;padding:0 16px;font-family:var(--mono);font-size:.75rem;font-weight:500;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);position:relative;transition:color .2s}
+.nav_links li a:hover,.nav_links li.active a{color:var(--ink)}
+.nav_links li.active a::after{content:"";position:absolute;left:16px;right:16px;bottom:-1px;height:2px;background:var(--primary)}
+.sign_regs_icon{display:flex;align-items:center;gap:8px}
+.sign_regs_icon a{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 14px;border-radius:var(--r-sm);font-family:var(--mono);font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text);transition:.2s}
+.sign_regs_icon a:hover{color:var(--primary)}
+.sign_regs_icon a:last-child{border:1px solid var(--line-strong);color:var(--ink)}
+.sign_regs_icon a:last-child:hover{border-color:var(--primary);color:var(--primary)}
+.menu_toggle{display:none;width:40px;height:34px;border:1px solid var(--line-strong);border-radius:var(--r-sm);place-items:center;font-size:20px;color:var(--ink)}
+.serachBox_Contaienr{position:relative}
+.suggestions{position:absolute;top:calc(100% + 8px);left:0;right:0;background:var(--surface);border:1px solid var(--line-strong);border-top:2px solid var(--primary);border-radius:var(--r-sm);box-shadow:var(--sh-md);padding:4px;z-index:30}
+.suggestions a{display:flex;align-items:center;gap:12px;padding:8px 10px;border-radius:2px;transition:.15s}
+.suggestions a:hover{background:var(--primary-soft)}
+.suggestions img{width:36px;height:36px;object-fit:contain;background:var(--tile);border-radius:2px;mix-blend-mode:normal}
+.suggestions span{font-size:.875rem;color:var(--ink);font-weight:500}
+
+@media (max-width:900px){
+  header{position:relative}
+  .top_header .container{grid-template-columns:1fr auto;gap:12px;padding:12px 0}
+  .brand_logo svg{width:30px;height:30px}.brand_text{font-size:1.1rem}
+  .top_header .serachBox_Contaienr{grid-column:1/-1;grid-row:2;max-width:none}
+  .menu_toggle{display:grid}
+  .btm_header>.container{height:auto;padding:8px 0;flex-wrap:wrap;gap:8px}
+  .btm_header .nav{flex:1;gap:8px;justify-content:space-between}
+  .nav_links,.sign_regs_icon{display:none;width:100%}
+  .btm_header.menu_open .nav_links{display:flex;flex-direction:column;order:3;height:auto;padding-top:4px;border-top:1px solid var(--line)}
+  .btm_header.menu_open .sign_regs_icon{display:flex;order:4;padding-bottom:8px}
+  .btm_header.menu_open .nav{flex-wrap:wrap}
+  .nav_links li a{padding:12px 4px;width:100%}
+  .nav_links li.active a::after{display:none}
+  .nav_links li.active a{color:var(--primary)}
+  .category_nav_list{width:calc(100vw - 8%);grid-template-columns:1fr;max-height:60vh}
+  .sign_regs_icon a{flex:1;justify-content:center;height:42px;border:1px solid var(--line-strong)}
+}
