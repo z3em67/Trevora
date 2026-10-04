@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from "react";
 import { LuMessageCircle, LuX, LuSend } from "react-icons/lu";
 import "./ChatBot.css";

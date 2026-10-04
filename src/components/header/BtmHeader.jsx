@@ -6,30 +6,38 @@ import {
   LuX,
   LuLogIn,
   LuUserPlus,
-  LuUserRound
+  LuUserRound,
 } from "react-icons/lu";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const NavLinks = [
   { title: "Home", link: "/" },
   { title: "About", link: "/about" },
- 
- 
+
   { title: "Contact", link: "/contact" },
+  { title: "Orders", link: "/orders" },
 ];
 
 function BtmHeader() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const [isLoggedIn, setIsLoggedIn] = useState(
+  !!localStorage.getItem("currentUser")
+);
   const categoryRef = useRef(null);
 
-  useEffect(() => {
-    setIsCategoryOpen(false);
-    setIsMenuOpen(false);
-  }, [location]);
+ 
 
+  useEffect(() => {
+  setIsCategoryOpen(false);
+  setIsMenuOpen(false);
+
+  setIsLoggedIn(!!localStorage.getItem("currentUser"));
+}, [location]);
   useEffect(() => {
     fetch("https://dummyjson.com/products/categories")
       .then((res) => res.json())
@@ -39,7 +47,8 @@ function BtmHeader() {
 
   useEffect(() => {
     const close = (e) => {
-      if (categoryRef.current && !categoryRef.current.contains(e.target)) setIsCategoryOpen(false);
+      if (categoryRef.current && !categoryRef.current.contains(e.target))
+        setIsCategoryOpen(false);
     };
     const esc = (e) => e.key === "Escape" && setIsCategoryOpen(false);
     document.addEventListener("mousedown", close);
@@ -54,7 +63,10 @@ function BtmHeader() {
     <div className={`btm_header ${isMenuOpen ? "menu_open" : ""}`}>
       <div className="container">
         <nav className="nav">
-          <div className={`category_nav ${isCategoryOpen ? "open" : ""}`} ref={categoryRef}>
+          <div
+            className={`category_nav ${isCategoryOpen ? "open" : ""}`}
+            ref={categoryRef}
+          >
             <button
               type="button"
               className="category_btn"
@@ -66,7 +78,9 @@ function BtmHeader() {
               <LuChevronDown />
             </button>
 
-            <div className={`category_nav_list ${isCategoryOpen ? "active" : ""}`}>
+            <div
+              className={`category_nav_list ${isCategoryOpen ? "active" : ""}`}
+            >
               {categories.map((category) => (
                 <Link key={category.slug} to={`/category/${category.slug}`}>
                   {category.name}
@@ -87,26 +101,43 @@ function BtmHeader() {
 
           <ul className="nav_links">
             {NavLinks.map((item) => (
-              <li key={item.link} className={location.pathname === item.link ? "active" : ""}>
+              <li
+                key={item.link}
+                className={location.pathname === item.link ? "active" : ""}
+              >
                 <Link to={item.link}>{item.title}</Link>
               </li>
             ))}
           </ul>
         </nav>
-<div className="sign_regs_icon">
+       <div className="sign_regs_icon">
+  {!isLoggedIn ? (
+    <>
+      <Link to="/login">
+        <LuLogIn /> Sign in
+      </Link>
 
-  <Link to="/login">
-    <LuLogIn /> Sign in
-  </Link>
-
-  <Link to="/register">
-    <LuUserPlus /> Register
-  </Link>
+      <Link to="/register">
+        <LuUserPlus /> Register
+      </Link>
+    </>
+  ) : (
+ <button
+  className="logout_btn"
+  onClick={() => {
+    localStorage.removeItem("currentUser");
+    setIsLoggedIn(false);
+    alert("Logout successful");
+    navigate("/");
+  }}
+>
+  Logout
+</button>
+  )}
 
   <Link to="/profile" className="profile_icon">
     <LuUserRound />
   </Link>
-
 </div>
       </div>
     </div>

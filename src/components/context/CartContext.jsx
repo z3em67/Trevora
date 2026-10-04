@@ -24,16 +24,8 @@ export default function CartProvider({ children }) {
   const removeFromFavorites = (id) => {
     setFavorites((prev) => prev.filter((i) => i.id !== id))
   }
-
-
-
-
-
-
-
-
-
-    // cart
+   
+  // cart
   const [cartItems, setCartItems] = useState(() => {
     const savedCart = localStorage.getItem("cartItems");
     return savedCart ? JSON.parse(savedCart) : [];

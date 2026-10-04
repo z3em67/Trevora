@@ -87,57 +87,25 @@ input[type=checkbox],input[type=radio]{width:18px;height:18px;accent-color:var(-
 
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 /* Profile */
-.profile_page{min-height:70vh;padding:56px 20px 72px;display:flex;justify-content:center;align-items:flex-start;background:var(--surface-2)}
-.profile_card{width:100%;max-width:640px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 40px -16px rgba(30,64,175,.25);overflow:hidden}
-.profile_cover{height:120px;background:linear-gradient(135deg,#1e40af 0%,#2563eb 55%,#60a5fa 100%)}
-.profile_head{display:flex;align-items:flex-end;gap:18px;padding:0 32px;margin-top:-44px}
-.profile_avatar{flex:none;width:92px;height:92px;border-radius:50%;background:#fff;color:var(--primary);border:4px solid #fff;box-shadow:0 4px 14px rgba(30,64,175,.25);display:grid;place-items:center;font-family:var(--font-head);font-size:2rem;font-weight:700;letter-spacing:.02em}
-.profile_head_text{padding-bottom:6px;min-width:0}
-.profile_head_text h1{font-size:1.6rem;letter-spacing:-.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:6px}
-.profile_role{display:inline-block;padding:3px 10px;border-radius:999px;background:#eff6ff;color:#1d4ed8;font-family:var(--mono);font-size:.6875rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
-.profile_body{padding:28px 32px 32px}
-.profile_section_title{font-size:1.05rem;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--line)}
-.profile_list{display:flex;flex-direction:column}
-.profile_row{display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid var(--line)}
-.profile_row:last-child{border-bottom:0}
-.profile_row_icon{flex:none;width:40px;height:40px;border-radius:8px;background:#eff6ff;color:var(--primary);display:grid;place-items:center;font-size:18px}
-.profile_row dt{font-family:var(--mono);font-size:.6875rem;font-weight:500;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:2px}
-.profile_row dd{color:var(--ink);font-size:1rem;font-weight:500;word-break:break-word}
-.cap{text-transform:capitalize}
-.profile_actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
-.profile_actions .btn svg{font-size:16px}
-.profile_danger{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:32px;padding:18px 20px;border:1px solid #fecaca;background:#fef2f2;border-radius:8px}
-.profile_danger h3{font-size:.95rem;color:#991b1b;margin-bottom:2px}
-.profile_danger p{font-size:.8125rem;color:#b45454}
-.profile_delete_btn{color:var(--danger);border-color:#fca5a5;background:#fff}
-.profile_delete_btn:hover{background:var(--danger);border-color:var(--danger);color:#fff}
-.profile_form{display:flex;flex-direction:column}
-.profile_form .field{display:flex;flex-direction:column;gap:6px;margin-bottom:18px}
-.profile_form label{font-size:.75rem;font-weight:600;color:var(--text);text-transform:uppercase;letter-spacing:.08em}
-.profile_form input{height:46px;padding:0 14px;background:#fff;border:1px solid var(--line-strong);border-radius:6px;font-size:1rem;color:var(--ink)}
-.profile_form input.invalid{border-color:var(--danger);box-shadow:0 0 0 3px rgba(220,38,38,.12)}
-.field_readonly{height:46px;display:flex;align-items:center;padding:0 14px;background:var(--surface-2);border:1px solid var(--line);border-radius:6px;color:var(--muted)}
-.field_error{color:var(--danger);font-size:.8125rem}
-.field_hint{color:var(--muted);font-size:.8125rem}
-.profile_empty{width:100%;max-width:420px;text-align:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:44px 32px;box-shadow:0 12px 40px -16px rgba(30,64,175,.25)}
-.profile_empty_icon{width:64px;height:64px;margin:0 auto 16px;border-radius:50%;background:#eff6ff;color:var(--primary);display:grid;place-items:center;font-size:28px}
-.profile_empty h2{margin-bottom:8px}
-.profile_empty p{margin-bottom:22px}
-.modal_backdrop{position:fixed;inset:0;z-index:2000;background:rgba(15,23,42,.5);backdrop-filter:blur(3px);display:grid;place-items:center;padding:20px}
-.modal{width:100%;max-width:400px;background:#fff;border-radius:12px;padding:28px;text-align:center;box-shadow:0 30px 60px -20px rgba(15,23,42,.5)}
-.modal_icon{width:52px;height:52px;margin:0 auto 14px;border-radius:50%;background:#fef2f2;color:var(--danger);display:grid;place-items:center;font-size:24px}
-.modal h3{font-size:1.15rem;margin-bottom:8px}
-.modal p{margin-bottom:22px}
-.modal_actions{display:flex;gap:12px;justify-content:center}
-@media (max-width:560px){
-  .profile_page{padding:28px 14px 48px}
-  .profile_head{padding:0 20px;gap:14px}
-  .profile_avatar{width:76px;height:76px;font-size:1.6rem}
-  .profile_head_text h1{font-size:1.25rem}
-  .profile_body{padding:22px 20px 24px}
-  .profile_danger{flex-direction:column;align-items:flex-start}
-  .profile_actions .btn{flex:1}
-}
+.profile_page{min-height:70vh;padding:70px 20px;display:flex;justify-content:center;background:var(--surface-2)}
+.profile_card{width:100%;max-width:500px;padding:35px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 30px rgba(30,64,175,.08)}
+.profile_card h1{margin-bottom:35px;font-size:40px;color:var(--ink);text-align:center}
+.profile_card h1:hover{color:var(--primary)}
+.profile_info{display:flex;flex-direction:column;gap:22px}
+.profile_item span{display:block;margin-bottom:7px;padding:2px 10px;font-size:27px;border-radius:4px;color:#1d4ed8;background-color:#eff6ff}
+.profile_item p{margin:0;font-size:24px;color:var(--ink)}
+.profile_buttons{display:flex;gap:15px;margin-top:15px}
+.profile_buttons button,.profile_form button{padding:10px 20px;border:none;border-radius:6px;cursor:pointer}
+.change_btn{background:#eff6ff;color:#1e3a8a}
+.change_btn:hover{background-color:#dbeafe;color:#1e3a8a}
+.delete_btn{background:#dc2626;color:#fff}
+.delete_btn:hover{background:#b91c1c}
+.profile_form{display:flex;flex-direction:column;gap:10px}
+.profile_form label{margin-top:10px;font-size:20px;color:#1d4ed8}
+.profile_form input{padding:11px;border-radius:6px;border:1px solid var(--line-strong);outline:none;font-size:17px;background:#fff}
+.profile_form input:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--ring)}
+.save_btn{margin-top:20px;background:var(--primary);color:#fff}
+.save_btn:hover{background-color:var(--primary-hover);color:#fff}
 
 /* Login & Register */
 .auth_page{min-height:80vh;display:flex;justify-content:center;align-items:center;padding:50px 20px;background:var(--surface-2)}

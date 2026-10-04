@@ -7,7 +7,7 @@ function Logo() {
         <rect width="32" height="32" rx="4" />
         <path d="M18.5 4 8 18h7l-1.5 10L24 14h-7z" />
       </svg>
-      <span className="brand_text"><b>Trevora</b></span>
+      <span className="brand_text">ELECTRO<b>HUB</b></span>
     </span>
   );
 }

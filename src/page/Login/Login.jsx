@@ -34,50 +34,41 @@ function Login() {
     navigate("/");
   }
 
- return (
-  <div className="auth_page">
-    <div className="auth_card">
-      <h1>Login</h1>
+  return (
+    <div className="auth_page">
+      <div className="auth_card">
+        <h1>Login</h1>
 
-      <form onSubmit={handleLogin} className="auth_form">
+        <form onSubmit={handleLogin} className="auth_form">
 
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-<button type="submit" className="auth_btn">
-  Login
-</button>
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
-{localStorage.getItem("currentUser") && (
-  <button
-    type="button"
-    className="auth_btn logout_btn"
-    onClick={() => {
-      localStorage.removeItem("currentUser");
-      alert("Logout successful");
-    }}
-  >
-    Logout
-  </button>
-)}
-      </form>
-   
-      <p className="auth_switch">
-        Don't have an account?
-        <Link to="/register"> Register</Link>
-      </p>
- 
+          <button type="submit" className="auth_btn">
+            Login
+          </button>
+
+        </form>
+
+        <p className="auth_switch">
+          Don't have an account?
+          <Link to="/register"> Register</Link>
+        </p>
+
+      </div>
     </div>
-  </div>
-);}
+  );
+}
+
 export default Login;
