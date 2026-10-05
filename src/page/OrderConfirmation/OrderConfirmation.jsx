@@ -9,7 +9,7 @@ import {
   LuClock,
 } from "react-icons/lu";
 import PageTransition from "../../components/PageTransition";
-import "./orderConfirmation.css";
+import "./OrderConfirmation.css";
 
 function OrderConfirmation() {
   const { orderId } = useParams();
