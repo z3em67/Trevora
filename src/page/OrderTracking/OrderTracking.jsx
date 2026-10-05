@@ -202,7 +202,7 @@ import {
 
 import PageTransition from "../../components/PageTransition";
 
-import "./orderTracking.css";
+import "./OrderTracking.css";
 
 function OrderTracking() {
   const { orderId } = useParams();
