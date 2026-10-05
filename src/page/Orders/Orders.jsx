@@ -10,7 +10,7 @@ import {
 } from "react-icons/lu";
 
 import PageTransition from "../../components/PageTransition";
-import "./orders.css";
+import "./Orders.css";
 
 function Orders() {
   const currentUser = JSON.parse(

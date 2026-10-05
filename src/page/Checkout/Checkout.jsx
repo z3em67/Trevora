@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CartContext } from "../../components/context/CartContext";
 import PageTransition from "../../components/PageTransition";
-import "./checkout.css";
+import "./Checkout.css";
 
 function Checkout() {
   const { cartItems, removeFromCart } = useContext(CartContext);
