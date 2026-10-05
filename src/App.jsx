@@ -24,13 +24,25 @@ import OrderTracking from "./page/OrderTracking/OrderTracking";
 import SellerSetup from "./page/Seller/SellerSetup";
 
 import SellerProducts from "./page/Seller/SellerProducts";
+import { useLocation } from "react-router-dom";
+import AdminRoute from "./admin/AdminRoute";
+import AdminLayout from "./admin/AdminLayout";
+import Dashboard from "./admin/pages/Dashboard";
+import AdminUsers from "./admin/pages/Users";
+import AdminProducts from "./admin/pages/Products";
+import AdminCategories from "./admin/pages/Categories";
+import AdminOrders from "./admin/pages/Orders";
+import AdminBanners from "./admin/pages/Banners";
 function App() {
+  const isAdminArea = useLocation().pathname.startsWith("/admin");
   return (
     <>
-      <header>
-        <TopHeader />
-        <BtmHeader />
-      </header>
+      {!isAdminArea && (
+        <header>
+          <TopHeader />
+          <BtmHeader />
+        </header>
+      )}
 
       <Toaster
         position="bottom-right"
@@ -81,11 +93,19 @@ function App() {
             
 
 <Route path="/seller/products" element={<SellerProducts />} />
+            <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
+              <Route index element={<Dashboard />} />
+              <Route path="users" element={<AdminUsers />} />
+              <Route path="products" element={<AdminProducts />} />
+              <Route path="categories" element={<AdminCategories />} />
+              <Route path="orders" element={<AdminOrders />} />
+              <Route path="banners" element={<AdminBanners />} />
+            </Route>
           </Routes>
         </AnimatePresence>
       </main>
 
-      <Footer />
+      {!isAdminArea && <Footer />}
     </>
   );
 }

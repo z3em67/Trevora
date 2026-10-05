@@ -7,6 +7,7 @@ import SlideProductLoading from "../../components/slideProducts/SlideProductLoad
 import ProductImages from "./ProductImages";
 import ProductInfo from "./ProductInfo";
 import PageTransition from "../../components/PageTransition";
+import { getCustomProducts, applyCatalog, customProductsFor } from "../../admin/adminStore";
 
 function ProductDetails() {
   const { id } = useParams();
@@ -20,9 +21,15 @@ function ProductDetails() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
+        // Products added from the admin dashboard live in localStorage
+        const own = getCustomProducts().find((p) => String(p.id) === String(id));
+        if (own) {
+          setProduct(own);
+          return;
+        }
         const res = await fetch(`https://dummyjson.com/products/${id}`);
         const data = await res.json();
-        setProduct(data.images ? data : null);
+        setProduct(data.images ? applyCatalog([data])[0] || null : null);
       } catch (error) {
         console.log(error);
       } finally {
@@ -37,7 +44,10 @@ function ProductDetails() {
     fetch(`https://dummyjson.com/products/category/${product.category}`)
       .then((res) => res.json())
       .then((data) => {
-        setRelatedProducts(data.products);
+        setRelatedProducts([
+          ...customProductsFor(product.category),
+          ...applyCatalog(data.products || []),
+        ]);
       })
       .catch((error) => console.error(error))
       .finally(() => setLoadingRelatedProducts(false));

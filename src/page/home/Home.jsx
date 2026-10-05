@@ -5,6 +5,7 @@ import "./home.css";
 import SlideProduct from "../../components/slideProducts/SlideProduct";
 import SlideProductLoading from "../../components/slideProducts/SlideProductLoading";
 import PageTransition from "../../components/PageTransition";
+import { mergeCategories, applyCatalog, customProductsFor } from "../../admin/adminStore";
 import { LuTruck, LuShieldCheck, LuRotateCcw, LuHeadphones } from "react-icons/lu";
 
 const perks = [
@@ -14,16 +15,9 @@ const perks = [
   { icon: <LuHeadphones />, title: "Friendly support", text: "We are here to help" },
 ];
 
-const categories = [
-  "smartphones",
-  "mobile-accessories",
-  "laptops",
-  "tablets",
-  "sunglasses",
-  
-];
 
 function Home() {
+  const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState({});
 
   const [loading, setLoading] = useState(true);
@@ -31,18 +25,33 @@ function Home() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        const catRes = await fetch("https://dummyjson.com/products/categories");
+        const apiCats = await catRes.json();
+        // Featured, visible categories (managed from the admin dashboard)
+        const featured = mergeCategories(apiCats).filter(
+          (c) => c.featured && !c.hidden
+        );
+
         const results = await Promise.all(
-          categories.map(async (category) => {
-            const res = await fetch(
-              `https://dummyjson.com/products/category/${category}`
-            );
-            const data = await res.json();
-            return { [category]: data.products };
+          featured.map(async (cat) => {
+            let apiProducts = [];
+            if (!cat.custom) {
+              const res = await fetch(
+                `https://dummyjson.com/products/category/${cat.slug}`
+              );
+              const data = await res.json();
+              apiProducts = applyCatalog(data.products || []);
+            }
+            return {
+              ...cat,
+              items: [...customProductsFor(cat.slug), ...apiProducts],
+            };
           })
         );
 
-        const productsData = Object.assign({}, ...results);
-        setProducts(productsData);
+        const withItems = results.filter((c) => c.items.length > 0);
+        setCategories(withItems);
+        setProducts(Object.fromEntries(withItems.map((c) => [c.slug, c.items])));
       } catch (error) {
         console.error("Erorr Fetching", error);
       } finally {
@@ -68,13 +77,13 @@ function Home() {
         </div>
 
         {loading
-          ? categories.map((category) => <SlideProductLoading key={category} />)
+          ? [0, 1, 2].map((i) => <SlideProductLoading key={i} />)
           : categories.map((category) => (
               <SlideProduct
-                key={category}
-                data={products[category]}
-                title={category.replace("-", " ")}
-                slug={category}
+                key={category.slug}
+                data={products[category.slug]}
+                title={category.name}
+                slug={category.slug}
               />
             ))}
             

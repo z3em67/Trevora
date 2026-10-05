@@ -1,0 +1,19 @@
+import { Link } from "react-router-dom";
+import { LuShieldAlert } from "react-icons/lu";
+import { getCurrentUser } from "./adminStore";
+
+// Only lets admins in. NOTE: front-end only guard (data lives in localStorage).
+export default function AdminRoute({ children }) {
+  const user = getCurrentUser();
+  if (user?.role === "admin") return children;
+  return (
+    <div className="container">
+      <div className="empty_state">
+        <LuShieldAlert />
+        <h2>Admins only</h2>
+        <p>{user ? "Your account doesn't have admin access." : "Please sign in with an admin account."}</p>
+        <Link to="/login" className="btn">Go to login</Link>
+      </div>
+    </div>
+  );
+}

@@ -4,6 +4,7 @@ import Product from "../../components/slideProducts/Product";
 import "./categorypage.css";
 import SlideProductLoading from "../../components/slideProducts/SlideProductLoading";
 import PageTransition from "../../components/PageTransition";
+import { applyCatalog, customProductsFor } from "../../admin/adminStore";
 
 function CategoryPage() {
   const { category } = useParams();
@@ -16,9 +17,16 @@ function CategoryPage() {
     fetch(`https://dummyjson.com/products/category/${category}`)
       .then((res) => res.json())
       .then((data) => {
-        setCategoryProducts(data);
+        const products = [
+          ...customProductsFor(category),
+          ...applyCatalog(data.products || []),
+        ];
+        setCategoryProducts({ products, total: products.length });
       })
-      .catch((error) => console.error(error))
+      .catch(() => {
+        const products = customProductsFor(category);
+        setCategoryProducts({ products, total: products.length });
+      })
       .finally(() => setLoading(false));
   }, [category]);
 

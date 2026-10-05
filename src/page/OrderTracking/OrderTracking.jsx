@@ -200,7 +200,7 @@ function OrderTracking() {
               
 
                 <div className="tracking_action">
-                  {currentIndex < statuses.length - 1 ? (
+                  {JSON.parse(localStorage.getItem("currentUser") || "null")?.role !== "admin" ? null : currentIndex < statuses.length - 1 ? (
                     <button
                       type="button"
                       className="btn"
@@ -217,6 +217,26 @@ function OrderTracking() {
               </div>
             )}
 
+
+            {order.shippingInfo &&
+              (order.shippingInfo.carrier ||
+                order.shippingInfo.trackingNumber ||
+                order.shippingInfo.estimatedDelivery ||
+                order.shippingInfo.note) && (
+                <div className="tracking_card">
+                  <h2>Shipping Details</h2>
+                  {order.shippingInfo.carrier && (
+                    <p>Carrier: <strong>{order.shippingInfo.carrier}</strong></p>
+                  )}
+                  {order.shippingInfo.trackingNumber && (
+                    <p>Tracking number: <strong>{order.shippingInfo.trackingNumber}</strong></p>
+                  )}
+                  {order.shippingInfo.estimatedDelivery && (
+                    <p>Estimated delivery: <strong>{order.shippingInfo.estimatedDelivery}</strong></p>
+                  )}
+                  {order.shippingInfo.note && <p>{order.shippingInfo.note}</p>}
+                </div>
+              )}
 
             <div className="tracking_items">
               <div className="tracking_items_header">

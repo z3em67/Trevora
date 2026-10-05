@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import PageTransition from "../components/PageTransition";
 import SlideProductLoading from "../components/slideProducts/SlideProductLoading";
 import Product from "../components/slideProducts/Product";
+import { applyCatalog } from "../admin/adminStore";
 
 function SearchResults() {
   const [results, setResults] = useState([]);
@@ -18,7 +19,7 @@ function SearchResults() {
           `https://dummyjson.com/products/search?q=${query}`
         );
         const data = await res.json();
-        setResults(data.products || []);
+        setResults(applyCatalog(data.products || []));
       } catch (error) {
         console.error("Search Error :", error);
       } finally {

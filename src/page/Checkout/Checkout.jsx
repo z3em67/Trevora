@@ -173,13 +173,13 @@ if (!currentUser) {
   return (
     <PageTransition>
       <div className="checkout container">
-        <h1>Checkout</h1>
+        <h1 align="center">Checkout</h1>
 
         <form onSubmit={handlePlaceOrder}>
           <div className="checkout_layout">
             {/* LEFT SIDE */}
             <div className="checkout_form">
-              <h2>Billing Details</h2>
+              
 
               <input
                 type="text"
@@ -205,7 +205,6 @@ if (!currentUser) {
                 onChange={handleChange}
               />
 
-              <h2>Shipping Details</h2>
 
               <input
                 type="text"
@@ -249,7 +248,7 @@ if (!currentUser) {
             </div>
 
             {/* RIGHT SIDE */}
-            <aside className="ordersummary">
+            <aside className="ordersummary" style={{ width: "75%" , margin: "10px auto" }} >
               <h2>Order Summary</h2>
 
               {cartItems.map((item) => (

@@ -24,6 +24,11 @@ function Login() {
       return;
     }
 
+    if (user.banned) {
+      alert("This account has been suspended.");
+      return;
+    }
+
     localStorage.setItem(
       "currentUser",
       JSON.stringify(user)
@@ -31,7 +36,7 @@ function Login() {
 
     alert("Login successful");
 
-    navigate("/");
+    navigate(user.role === "admin" ? "/admin" : "/");
   }
 
   return (

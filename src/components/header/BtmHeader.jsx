@@ -9,6 +9,7 @@ import {
   LuUserRound,
 } from "react-icons/lu";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { visibleCategories } from "../../admin/adminStore";
 
 const NavLinks = [
   { title: "Home", link: "/" },
@@ -28,6 +29,10 @@ function BtmHeader() {
   const [isLoggedIn, setIsLoggedIn] = useState(
   !!localStorage.getItem("currentUser")
 );
+  const isAdminUser = (() => {
+    try { return JSON.parse(localStorage.getItem("currentUser"))?.role === "admin"; }
+    catch { return false; }
+  })();
   const categoryRef = useRef(null);
 
  
@@ -41,7 +46,7 @@ function BtmHeader() {
   useEffect(() => {
     fetch("https://dummyjson.com/products/categories")
       .then((res) => res.json())
-      .then((data) => setCategories(data))
+      .then((data) => setCategories(visibleCategories(data)))
       .catch((error) => console.error(error));
   }, []);
 
@@ -134,6 +139,8 @@ function BtmHeader() {
   Logout
 </button>
   )}
+
+  {isAdminUser && <Link to="/admin">Admin</Link>}
 
   <Link to="/profile" className="profile_icon">
     <LuUserRound />

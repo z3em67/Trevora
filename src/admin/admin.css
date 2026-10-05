@@ -1,0 +1,53 @@
+.adm{display:grid;grid-template-columns:240px 1fr;min-height:100vh;background:var(--surface-2)}
+.adm_side{background:var(--ink);color:#cbd5e1;padding:20px 14px;display:flex;flex-direction:column;gap:18px;position:sticky;top:0;height:100vh}
+.adm_logo{color:#fff;font-size:1.4rem;padding:0 10px}
+.adm_side nav,.adm_side_foot{display:flex;flex-direction:column;gap:4px}
+.adm_side_foot{margin-top:auto}
+.adm_side a,.adm_side_foot button{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--r);color:#cbd5e1;font-size:.9rem;text-align:left;width:100%}
+.adm_side a:hover,.adm_side_foot button:hover{background:rgba(255,255,255,.08);color:#fff}
+.adm_side a.active{background:var(--primary);color:#fff}
+.adm_main{padding:28px;min-width:0}
+.adm_head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.adm_head p{margin-top:4px}
+.adm_card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:18px;margin-bottom:18px}
+.adm_card h3{margin-bottom:12px;font-size:1.05rem}
+.adm_stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:18px}
+.adm_stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:16px;display:flex;gap:12px;align-items:center}
+.adm_stat svg{font-size:26px;color:var(--primary)}
+.adm_stat span{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.adm_stat strong{display:block;font-size:1.5rem;color:var(--ink);font-family:var(--font-head)}
+.adm_tools{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.adm_tools input,.adm_tools select{max-width:260px}
+.adm_table_wrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg)}
+.adm_table{width:100%;border-collapse:collapse;font-size:.9rem}
+.adm_table th,.adm_table td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:middle}
+.adm_table th{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);background:var(--surface-2)}
+.adm_table tr:last-child td{border-bottom:none}
+.adm_table img{width:44px;height:44px;object-fit:cover;border-radius:var(--r-sm);background:var(--tile)}
+.adm_actions{display:flex;gap:6px;flex-wrap:wrap}
+.adm_form{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.adm_form .full{grid-column:1/-1}
+.adm_form label{display:flex;flex-direction:column;gap:6px}
+.adm_empty{padding:36px;text-align:center;color:var(--muted)}
+.adm_modal{position:fixed;inset:0;background:rgba(15,23,42,.55);display:grid;place-items:center;z-index:200;padding:16px}
+.adm_modal_box{background:var(--surface);border-radius:var(--r-lg);padding:22px;width:100%;max-width:640px;max-height:90vh;overflow:auto}
+.adm_modal_box h3{margin-bottom:14px}
+.adm_modal_foot{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+.adm_banner_thumb{width:120px;height:60px;object-fit:cover;border-radius:var(--r-sm);background:var(--tile)}
+.adm_bar{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:.85rem}
+.adm_bar i{display:block;height:10px;background:var(--primary);border-radius:2px;min-width:2px}
+.adm_bar span{width:90px;color:var(--muted)}
+
+@media(max-width:820px){
+  .adm{grid-template-columns:1fr}
+  .adm_side{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center}
+  .adm_side nav{flex-direction:row;flex-wrap:wrap}
+  .adm_side_foot{margin-top:0;flex-direction:row;width:auto}
+  .adm_side span{display:none}
+  .adm_main{padding:16px}
+}
+.adm_status{padding:2px 8px;border-radius:2px;font-size:.72rem;font-weight:700;text-transform:uppercase;font-family:var(--mono);background:var(--primary-soft);color:var(--primary)}
+.adm_status.delivered,.adm_status.admin,.adm_status.active{background:var(--success-soft);color:var(--success)}
+.adm_status.shipped,.adm_status.seller{background:rgba(124,58,237,.1);color:#7c3aed}
+.adm_status.pending,.adm_status.processing,.adm_status.hidden{background:var(--warning-soft);color:var(--warning)}
+.adm_status.cancelled,.adm_status.banned{background:var(--danger-soft);color:var(--danger)}
