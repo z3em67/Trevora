@@ -57,7 +57,15 @@ function Checkout() {
 
   const handlePlaceOrder = (e) => {
     e.preventDefault();
+const currentUser = JSON.parse(
+  localStorage.getItem("currentUser")
+);
 
+if (!currentUser) {
+  alert("Please login or create an account before placing an order.");
+  window.location.href = "/login";
+  return;
+}
     // Check cart
     if (cartItems.length === 0) {
       alert("Your cart is empty.");
@@ -128,7 +136,10 @@ function Checkout() {
     const order = {
       id: Date.now(),
       userId: currentUser?.id,
-      customer: formData,
+     customer: {
+  ...formData,
+  email: currentUser.email,
+},
       items: cartItems,
       subtotal: total,
       shipping: 0,
@@ -141,7 +152,8 @@ function Checkout() {
     console.log("Order:", order);
 
     // Get previous orders
-    const existingOrders = JSON.parse(localStorage.getItem("orders")) || [];
+  const existingOrders =
+  JSON.parse(localStorage.getItem("orders")) || [];
 
     // Add new order
     existingOrders.push(order);

@@ -6,7 +6,9 @@ import {
   LuCreditCard,
   LuClock,
   LuTruck,
+  LuX,
 } from "react-icons/lu";
+
 import PageTransition from "../../components/PageTransition";
 import "./orders.css";
 
@@ -15,14 +17,16 @@ function Orders() {
     localStorage.getItem("currentUser")
   );
 
-  const allOrders =
-    JSON.parse(localStorage.getItem("orders")) || [];
+const allOrders =
+  JSON.parse(localStorage.getItem("orders")) || [];
 
-  const orders = currentUser
-    ? allOrders.filter(
-        (order) => order.userId === currentUser.id
-      )
-    : [];
+const orders = currentUser
+  ? allOrders.filter(
+      (order) =>
+        String(order.userId) === String(currentUser.id)
+    )
+  : [];
+  // Get payment method name
   const getPaymentMethod = (method) => {
     switch (method) {
       case "cod":
@@ -39,9 +43,37 @@ function Orders() {
     }
   };
 
+  // Cancel Order
+  function handleCancelOrder(orderId) {
+    const confirmCancel = window.confirm(
+      "Are you sure you want to cancel this order?"
+    );
+
+    if (!confirmCancel) {
+      return;
+    }
+
+    const allOrders =
+      JSON.parse(localStorage.getItem("orders")) || [];
+
+    const updatedOrders = allOrders.filter(
+      (order) => order.id !== orderId
+    );
+
+    localStorage.setItem(
+      "orders",
+      JSON.stringify(updatedOrders)
+    );
+
+    // Refresh the page to show the updated orders
+    window.location.reload();
+  }
+
   return (
     <PageTransition>
       <div className="orders container">
+
+        {/* Orders Header */}
         <div className="orders_header">
           <div>
             <h1>My Orders</h1>
@@ -54,32 +86,46 @@ function Orders() {
           </div>
         </div>
 
+        {/* Empty Orders */}
         {orders.length === 0 ? (
           <div className="empty_orders">
+
             <div className="empty_orders_icon">
               <LuShoppingBag />
             </div>
 
             <h2>No Orders Yet</h2>
 
-            <p>You haven't placed any orders yet.</p>
+            <p>
+              You haven't placed any orders yet.
+            </p>
 
             <Link to="/" className="btn">
               <LuShoppingBag />
               Start Shopping
             </Link>
+
           </div>
         ) : (
+
+          /* Orders List */
           <div className="orders_list">
+
             {orders
               .slice()
               .reverse()
               .map((order) => (
-                <div className="order_card" key={order.id}>
+
+                <div
+                  className="order_card"
+                  key={order.id}
+                >
+
+                  {/* Order Header */}
                   <div className="order_card_header">
+
                     <div>
                       <span>Order ID</span>
-
                       <h3>#{order.id}</h3>
                     </div>
 
@@ -87,10 +133,15 @@ function Orders() {
                       <LuClock />
                       <span>{order.date}</span>
                     </div>
+
                   </div>
 
+                  {/* Order Details */}
                   <div className="order_card_body">
+
+                    {/* Items */}
                     <div className="order_detail">
+
                       <div className="order_detail_icon">
                         <LuShoppingBag />
                       </div>
@@ -98,11 +149,16 @@ function Orders() {
                       <div>
                         <span>Items</span>
 
-                        <strong>{order.items.length}</strong>
+                        <strong>
+                          {order.items?.length || 0}
+                        </strong>
                       </div>
+
                     </div>
 
+                    {/* Payment */}
                     <div className="order_detail">
+
                       <div className="order_detail_icon">
                         <LuCreditCard />
                       </div>
@@ -111,12 +167,15 @@ function Orders() {
                         <span>Payment</span>
 
                         <strong>
-                          {getPaymentMethod(order.payment?.method)}
+                          {getPaymentMethod(
+                            order.payment?.method
+                          )}
                         </strong>
                       </div>
-                    </div>
 
+                    </div>{/* Total */}
                     <div className="order_detail">
+
                       <div className="order_detail_icon">
                         <LuPackage />
                       </div>
@@ -124,11 +183,19 @@ function Orders() {
                       <div>
                         <span>Total</span>
 
-                        <strong>${Number(order.total).toFixed(2)}</strong>
+                        <strong>
+                          $
+                          {Number(
+                            order.total || 0
+                          ).toFixed(2)}
+                        </strong>
                       </div>
+
                     </div>
 
+                    {/* Status */}
                     <div className="order_detail">
+
                       <div className="order_detail_icon">
                         <LuTruck />
                       </div>
@@ -137,24 +204,50 @@ function Orders() {
                         <span>Status</span>
 
                         <strong
-                          className={`status ${order.status?.toLowerCase()}`}
+                          className={`status ${
+                            order.status?.toLowerCase() || ""
+                          }`}
                         >
-                          {order.status}
+                          {order.status || "Pending"}
                         </strong>
                       </div>
+
                     </div>
+
                   </div>
 
+                  {/* Order Footer */}
                   <div className="order_card_footer">
-                    <Link to={`/order-tracking/${order.id}`} className="btn">
+
+                    {/* Track Order */}
+                    <Link
+                      to={`/order-tracking/${order.id}`}
+                      className="btn"
+                    >
                       <LuTruck />
                       Track Order
                     </Link>
+
+                    {/* Cancel Order */}
+                    <button
+                      className="btn cancel_order_btn"
+                      onClick={() =>
+                        handleCancelOrder(order.id)
+                      }
+                    >
+                      <LuX />
+                      Cancel Order
+                    </button>
+
                   </div>
+
                 </div>
+
               ))}
+
           </div>
         )}
+
       </div>
     </PageTransition>
   );

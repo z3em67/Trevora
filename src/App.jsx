@@ -17,10 +17,13 @@ import Profile from "./page/Profile/Profile";
 import About from "./page/About/About";
 import Contact from "./page/Contact/Contact";
 import ChatBot from "./page/ChatBot/ChatBot";
-import Checkout from "./page/checkout/Checkout";
+import Checkout from "./page/Checkout/Checkout";
 import OrderConfirmation from "./page/OrderConfirmation/OrderConfirmation";
 import Orders from "./page/Orders/Orders";
 import OrderTracking from "./page/OrderTracking/OrderTracking";
+import SellerSetup from "./page/Seller/SellerSetup";
+
+import SellerProducts from "./page/Seller/SellerProducts";
 function App() {
   return (
     <>
@@ -56,6 +59,10 @@ function App() {
             <Route path="/products/:id" element={<ProductDetails />} />
             <Route path="/category/:category" element={<CategoryPage />} />
             <Route path="/login" element={<Login />} />
+            <Route
+  path="/seller/setup"
+  element={<SellerSetup />}
+/>
             <Route path="/Contact" element={<Contact />} />
             <Route path="/Checkout" element={<Checkout />} />
             <Route path="/register" element={<Register />} />
@@ -69,7 +76,11 @@ function App() {
             <Route
               path="/order-tracking/:orderId"
               element={<OrderTracking />}
+              
             />
+            
+
+<Route path="/seller/products" element={<SellerProducts />} />
           </Routes>
         </AnimatePresence>
       </main>

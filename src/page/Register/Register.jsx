@@ -42,8 +42,11 @@ localStorage.setItem("currentUser", JSON.stringify(newUser));
 
 alert("Account created successfully");
 
-navigate("/");
-  }
+if (role === "seller") {
+  navigate("/seller/setup");
+} else {
+  navigate("/");
+}}
  return (
   <div className="auth_page">
     <div className="auth_card">
