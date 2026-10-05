@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { LuMessageCircle, LuX, LuSend } from "react-icons/lu";
 import "./ChatBot.css";
 
 function ChatBot() {
@@ -7,6 +8,28 @@ function ChatBot() {
     const [message, setMessage] = useState("");
     const [chat, setChat] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
+    const chatEndRef = useRef(null);
+    const inputRef = useRef(null);
+
+    // Scroll to newest message
+    useEffect(() => {
+        chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [chat, isOpen]);
+
+    // Focus input when the window opens
+    useEffect(() => {
+        if (isOpen && !loading) inputRef.current?.focus();
+    }, [isOpen, loading]);
+
+    // Close with Escape
+    useEffect(() => {
+        function onKey(e) {
+            if (e.key === "Escape") setIsOpen(false);
+        }
+        window.addEventListener("keydown", onKey);
+        return () => window.removeEventListener("keydown", onKey);
+    }, []);
 
     // Get products from API
     useEffect(() => {
@@ -210,58 +233,104 @@ function ChatBot() {
 
     return (
 
-        <div className="chatbot">
+        <div className="chatbot_root">
 
-            <h2>Store Assistant</h2>
+            {isOpen && (
 
-            <p>
-                Ask me about our products and prices.
-            </p>
+                <div
+                    className="chatbot"
+                    role="dialog"
+                    aria-label="Store Assistant"
+                >
 
-            <div className="chat">
+                    <div className="chatbot_header">
 
-                {chat.map((item, index) => (
+                        <div className="chatbot_title">
+                            <span className="chatbot_dot" />
+                            <div>
+                                <h2>Store Assistant</h2>
+                                <p>Ask me about our products and prices.</p>
+                            </div>
+                        </div>
 
-                    <div
-                        key={index}
-                        className={"message " + item.sender}
-                    >
-                        {item.text}
+                        <button
+                            className="chatbot_close"
+                            onClick={() => setIsOpen(false)}
+                            aria-label="Close chat"
+                        >
+                            <LuX />
+                        </button>
+
                     </div>
 
-                ))}
+                    <div className="chat">
 
-                {loading && (
-                    <p>Loading products...</p>
-                )}
+                        <div className="message ai">
+                            Hi! I can help you find products and prices. Try
+                            "laptops" or "under 50".
+                        </div>
 
-            </div>
+                        {chat.map((item, index) => (
 
-            <div className="chat-input">
+                            <div
+                                key={index}
+                                className={"message " + item.sender}
+                            >
+                                {item.text}
+                            </div>
 
-                <input
-                    type="text"
-                    placeholder="Ask about our products..."
-                    value={message}
-                    onChange={(e) =>
-                        setMessage(e.target.value)
-                    }
-                    onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                            sendMessage();
-                        }
-                    }}
-                    disabled={loading}
-                />
+                        ))}
 
-                <button
-                    onClick={sendMessage}
-                    disabled={loading}
-                >
-                    Send
-                </button>
+                        {loading && (
+                            <div className="chat_status">
+                                Loading products...
+                            </div>
+                        )}
 
-            </div>
+                        <div ref={chatEndRef} />
+
+                    </div>
+
+                    <div className="chat-input">
+
+                        <input
+                            ref={inputRef}
+                            type="text"
+                            placeholder="Ask about our products..."
+                            value={message}
+                            onChange={(e) =>
+                                setMessage(e.target.value)
+                            }
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                    sendMessage();
+                                }
+                            }}
+                            disabled={loading}
+                        />
+
+                        <button
+                            onClick={sendMessage}
+                            disabled={loading}
+                            aria-label="Send message"
+                        >
+                            <LuSend />
+                        </button>
+
+                    </div>
+
+                </div>
+
+            )}
+
+            <button
+                className={"chatbot_fab" + (isOpen ? " open" : "")}
+                onClick={() => setIsOpen((open) => !open)}
+                aria-label={isOpen ? "Close chat" : "Open chat"}
+                aria-expanded={isOpen}
+            >
+                {isOpen ? <LuX /> : <LuMessageCircle />}
+            </button>
 
         </div>
 

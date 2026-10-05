@@ -1,306 +1,271 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
 import "./Profile.css";
+import {
+  LuUser,
+  LuMail,
+  LuShield,
+  LuPencil,
+  LuTrash2,
+  LuCheck,
+  LuX,
+  LuTriangleAlert,
+} from "react-icons/lu";
+
+function readJSON(key, fallback) {
+  try {
+    return JSON.parse(localStorage.getItem(key)) ?? fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function getInitials(name = "") {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (!parts.length) return "?";
+  return (parts[0][0] + (parts[1]?.[0] || "")).toUpperCase();
+}
 
 function Profile() {
-  const user = JSON.parse(localStorage.getItem("currentUser"));
+  const [user, setUser] = useState(() => readJSON("currentUser", null));
 
   const [isEditing, setIsEditing] = useState(false);
-
+  const [showDelete, setShowDelete] = useState(false);
   const [name, setName] = useState(user?.name || "");
   const [email, setEmail] = useState(user?.email || "");
-  const [phone, setPhone] = useState(user?.phone || "");
-  const [storeName, setStoreName] = useState(user?.storeName || "");
-  const [storeDescription, setStoreDescription] = useState(
-    user?.storeDescription || ""
-  );
+  const [errors, setErrors] = useState({});
 
-  const allOrders =
-    JSON.parse(localStorage.getItem("orders")) || [];
-
-  const currentUser =
-  JSON.parse(localStorage.getItem("currentUser"));
-
-const userOrders =
-  currentUser?.role === "seller"
-    ? []
-    : currentUser
-    ? allOrders.filter(
-        (order) =>
-          String(order.userId) === String(currentUser.id)
-      )
-    : [];
-  function handleSave() {
-    const updatedUser = {
-      ...user,
-      name,
-      email,
-      phone,
-
-      ...(user?.role === "seller" && {
-        storeName,
-        storeDescription,
-      }),
-    };
-
-    localStorage.setItem(
-      "currentUser",
-      JSON.stringify(updatedUser)
+  // Not signed in
+  if (!user) {
+    return (
+      <div className="pf_page">
+        <div className="pf_empty">
+          <span className="pf_empty_icon">
+            <LuUser />
+          </span>
+          <h2>You're not signed in</h2>
+          <p>Log in to view and manage your profile.</p>
+          <Link to="/login" className="pf_btn">
+            Go to login
+          </Link>
+        </div>
+      </div>
     );
+  }
 
-    const users =
-      JSON.parse(localStorage.getItem("users")) || [];
+  function validate() {
+    const next = {};
+    if (!name.trim()) next.name = "Name is required";
+    if (!email.trim()) next.email = "Email is required";
+    else if (!/^\S+@\S+\.\S+$/.test(email.trim()))
+      next.email = "Enter a valid email address";
+    setErrors(next);
+    return Object.keys(next).length === 0;
+  }
 
-    const updatedUsers = users.map((u) =>
-      u.id === user.id ? updatedUser : u
-    );
+  function startEditing() {
+    setName(user.name || "");
+    setEmail(user.email || "");
+    setErrors({});
+    setIsEditing(true);
+  }
 
+  function cancelEditing() {
+    setErrors({});
+    setIsEditing(false);
+  }
+
+  function handleSave(e) {
+    e.preventDefault();
+    if (!validate()) return;
+
+    const updatedUser = { ...user, name: name.trim(), email: email.trim() };
+
+    localStorage.setItem("currentUser", JSON.stringify(updatedUser));
+
+    const users = readJSON("users", []);
     localStorage.setItem(
       "users",
-      JSON.stringify(updatedUsers)
+      JSON.stringify(users.map((u) => (u.id === user.id ? updatedUser : u)))
     );
 
+    setUser(updatedUser);
     setIsEditing(false);
-
-    alert("Profile updated");
+    toast.success("Profile updated");
   }
 
   function handleDeleteAccount() {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete your account?"
-    );
-
-    if (!confirmDelete) {
-      return;
-    }
-
-    const users =
-      JSON.parse(localStorage.getItem("users")) || [];
-
-    const updatedUsers = users.filter(
-      (u) => u.id !== user.id
-    );
-
+    const users = readJSON("users", []);
     localStorage.setItem(
       "users",
-      JSON.stringify(updatedUsers)
+      JSON.stringify(users.filter((u) => u.id !== user.id))
     );
-
     localStorage.removeItem("currentUser");
-
-    alert("Account deleted");
-
+    toast.success("Account deleted");
     window.location.href = "/login";
   }
 
+  const role = user.role || "user";
+
   return (
-    <div className="profile_page">
-      <div className="profile_card">
+    <div className="pf_page">
+      <div className="pf_card">
+        <div className="pf_cover" />
 
-        <h1>
-          {user&&user.role === "seller"
-            ? "Seller Profile"
-            : "My Profile"}
-        </h1>
-
-        {!isEditing ? (
-          <div className="profile_info">
-
-            <div className="profile_item">
-              <span>
-                <strong>Name</strong>
-              </span>
-              <p>{name}</p>
-            </div>
-
-            <div className="profile_item">
-              <span>
-                <strong>Email</strong>
-              </span>
-              <p>{email}</p>
-            </div>
-
-            <div className="profile_item">
-              <span>
-                <strong>Phone</strong>
-              </span>
-              <p>{phone}</p>
-            </div>
-
-            <div className="profile_item">
-              <span>
-                <strong>Role</strong>
-              </span>
-              <p>{user?.role}</p>
-            </div>
-
-            {user?.role === "seller" && (
-              <>
-                <div className="profile_item">
-                  <span>
-                    <strong>Store Name</strong>
-                  </span>
-
-                  <p>
-                    {storeName || "Not added yet"}
-                  </p>
-                </div>
-
-                <div className="profile_item">
-                  <span>
-                    <strong>Store Description</strong>
-                  </span>
-
-                  <p>
-                    {storeDescription || "Not added yet"}
-                  </p>
-                </div>
-
-                <div className="profile_item">
-                  <Link to="/seller/products">
-                    <button className="my_products_btn">
-                      My Products
-                    </button>
-                  </Link>
-                </div>
-              </>
-            )}
-
-            <div className="profile_buttons">
-
-              <button
-                className="change_btn"
-                onClick={() => setIsEditing(true)}
-              >
-                Change
-              </button><button
-                className="delete_btn"
-                onClick={handleDeleteAccount}
-              >
-                Delete Account
-              </button>
-
-            </div>
-
+        <div className="pf_head">
+          <div className="pf_avatar" aria-hidden="true">
+            {getInitials(user.name)}
           </div>
-        ) : (
-          <div className="profile_form">
-
-            <label>Name</label>
-
-            <input
-              value={name}
-              onChange={(e) =>
-                setName(e.target.value)
-              }
-            />
-
-            <label>Email</label>
-
-            <input
-              value={email}
-              onChange={(e) =>
-                setEmail(e.target.value)
-              }
-            />
-
-            <label>Phone</label>
-
-            <input
-              value={phone}
-              onChange={(e) =>
-                setPhone(e.target.value)
-              }
-            />
-
-            {user?.role === "seller" && (
-              <>
-                <label>Store Name</label>
-
-                <input
-                  value={storeName}
-                  onChange={(e) =>
-                    setStoreName(e.target.value)
-                  }
-                />
-
-                <label>Store Description</label>
-
-                <textarea
-                  value={storeDescription}
-                  onChange={(e) =>
-                    setStoreDescription(e.target.value)
-                  }
-                />
-              </>
-            )}
-
-            <div className="profile_item">
-              <span>
-                <strong>Role</strong>
-              </span>
-
-              <p>{user?.role}</p>
-            </div>
-
-            <button
-              className="save_btn"
-              onClick={handleSave}
-            >
-              Save
-            </button>
-
+          <div className="pf_head_text">
+            <h1>{user.name}</h1>
+            <p className="pf_email">{user.email}</p>
+            <span className="pf_role">{role}</span>
           </div>
-        )}
+        </div>
 
-        {/* Order History */}
+        <div className="pf_body">
+          {!isEditing ? (
+            <>
+              <h2 className="pf_section_title">Account details</h2>
 
-        {user?.role !== "seller" && (
-          <div className="order_history">
+              <dl className="pf_list">
+                <div className="pf_row">
+                  <span className="pf_row_icon">
+                    <LuUser />
+                  </span>
+                  <div>
+                    <dt>Full name</dt>
+                    <dd>{user.name}</dd>
+                  </div>
+                </div>
 
-            <h2>Order History</h2>
+                <div className="pf_row">
+                  <span className="pf_row_icon">
+                    <LuMail />
+                  </span>
+                  <div>
+                    <dt>Email address</dt>
+                    <dd>{user.email}</dd>
+                  </div>
+                </div>
 
-            {userOrders.length === 0 ? (
-              <p>No orders yet.</p>
-            ) : (
-              userOrders.map((order) => (
-                <div
-                  className="order_card"
-                  key={order.id}
+                <div className="pf_row">
+                  <span className="pf_row_icon">
+                    <LuShield />
+                  </span>
+                  <div>
+                    <dt>Account role</dt>
+                    <dd className="pf_cap">{role}</dd>
+                  </div>
+                </div>
+              </dl>
+
+              <div className="pf_actions">
+                <button className="pf_btn" onClick={startEditing}>
+                  <LuPencil /> Edit profile
+                </button>
+              </div>
+
+              <div className="pf_danger">
+                <div>
+                  <h3>Delete account</h3>
+                  <p>Permanently remove your account. This can't be undone.</p>
+                </div>
+                <button
+                  className="pf_btn pf_btn_ghost_danger"
+                  onClick={() => setShowDelete(true)}
                 >
-                  <h3>Order #{order.id}</h3>
+                  <LuTrash2 /> Delete
+                </button>
+              </div>
+            </>
+          ) : (
+            <form className="pf_form" onSubmit={handleSave} noValidate>
+              <h2 className="pf_section_title">Edit profile</h2>
 
-                  <p>
-                    <strong>Date:</strong> {order.date}
-                  </p>
+              <div className="pf_field">
+                <label htmlFor="pf-name">Full name</label>
+                <input
+                  id="pf-name"
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className={errors.name ? "pf_invalid" : ""}
+                  autoFocus
+                />
+                {errors.name && <small className="pf_error">{errors.name}</small>}
+              </div>
 
-                  <p>
-                    <strong>Total:</strong> ${order.total}
-                  </p>
+              <div className="pf_field">
+                <label htmlFor="pf-email">Email address</label>
+                <input
+                  id="pf-email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className={errors.email ? "pf_invalid" : ""}
+                />
+                {errors.email && <small className="pf_error">{errors.email}</small>}
+              </div>
 
-                  <p>
-                    <strong>Status:</strong> {order.status}
-                  </p>
+              <div className="pf_field">
+                <label>Account role</label>
+                <div className="pf_readonly pf_cap">{role}</div>
+                <small className="pf_hint">Role can't be changed here.</small>
+              </div>
 
-                  {order.items && (
-                    <div>
-                      <strong>Items:</strong>
-
-                      {order.items.map((item, index) => (
-                        <p key={index}>
-                          {item.title} × {item.quantity}
-                        </p>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))
-            )}
-
-          </div>
-        )}
-
+              <div className="pf_actions">
+                <button type="submit" className="pf_btn">
+                  <LuCheck /> Save changes
+                </button>
+                <button
+                  type="button"
+                  className="pf_btn pf_btn_outline"
+                  onClick={cancelEditing}
+                >
+                  <LuX /> Cancel
+                </button>
+              </div>
+            </form>
+          )}
+        </div>
       </div>
+
+      {showDelete && (
+        <div
+          className="pf_modal_backdrop"
+          onClick={() => setShowDelete(false)}
+          role="presentation"
+        >
+          <div
+            className="pf_modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="del-title"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <span className="pf_modal_icon">
+              <LuTriangleAlert />
+            </span>
+            <h3 id="del-title">Delete your account?</h3>
+            <p>
+              This will permanently remove your account and can't be undone.
+            </p>
+            <div className="pf_modal_actions">
+              <button
+                className="pf_btn pf_btn_outline"
+                onClick={() => setShowDelete(false)}
+              >
+                Cancel
+              </button>
+              <button className="pf_btn pf_btn_danger" onClick={handleDeleteAccount}>
+                Yes, delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
