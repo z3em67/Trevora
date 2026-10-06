@@ -4,10 +4,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { CartContext } from '../context/CartContext';
 import toast from 'react-hot-toast';
 
+// كومبوننت النجوم: بيرسم 5 نجوم وبيملا منهم الجزء المناسب للتقييم (حتى الكسور زي 3.5)
 function Stars({ value = 0 }) {
   return (
     <div className="stars" aria-label={`Rated ${value} out of 5`}>
       {[0, 1, 2, 3, 4].map((i) => {
+        // نسبة تعبئة النجمة دي (من 0 لـ 1) حسب التقييم
         const fill = Math.max(0, Math.min(1, value - i));
         return (
           <span className="star" key={i}>
@@ -21,14 +23,17 @@ function Stars({ value = 0 }) {
   );
 }
 
+// كارت المنتج: صورة واسم وسعر وتقييم وزرار إضافة للسلة وقلب للمفضلة وزرار مشاركة
 function Product({item}) {
 
   const navigate = useNavigate()
 
   const {cartItems , addToCart , addToFavorites , favorites , removeFromFavorites} = useContext(CartContext)
 
+  // بنشوف المنتج ده موجود في السلة ولا لأ (عشان نقفل الزرار)
   const isInCart = cartItems.some(i => i.id === item.id);
 
+  // بتضيف المنتج للسلة وتظهر إشعار فيه صورة المنتج وزرار يودّيك للسلة
   const handleAddToCart = () => {
     addToCart(item)
 
@@ -50,8 +55,10 @@ function Product({item}) {
   }
 
   // favorites
+  // بنشوف المنتج ده في المفضلة ولا لأ
   const isInFav = favorites.some(i => i.id === item.id);
 
+  // بتبدّل المنتج في المفضلة: لو موجود بتشيله ولو مش موجود بتضيفه، مع إشعار
   const handleAddToFav = () => {
     if(isInFav) {
       removeFromFavorites(item.id)
@@ -62,6 +69,7 @@ function Product({item}) {
     }
    }
 
+  // بتشارك لينك المنتج: لو المتصفح بيدعم المشاركة بتفتحها، غير كده بتنسخ اللينك
   const handleShare = async () => {
     const url = `${window.location.origin}/products/${item.id}`
     try {
@@ -70,7 +78,9 @@ function Product({item}) {
     } catch { /* share dismissed */ }
   }
 
+  // نسبة الخصم متقرّبة لأقرب رقم صحيح
   const discount = Math.round(item.discountPercentage || 0)
+  // السعر القديم قبل الخصم (بيتحسب من السعر الحالي ونسبة الخصم)
   const oldPrice = discount > 0 ? item.price / (1 - item.discountPercentage / 100) : null
 
   return (

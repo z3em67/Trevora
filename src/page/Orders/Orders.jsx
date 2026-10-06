@@ -12,6 +12,7 @@ import {
 import PageTransition from "../../components/PageTransition";
 import "./Orders.css";
 
+// صفحة أوردراتي: بتعرض أوردرات المستخدم الحالي وتسمح بتتبع الأوردر أو إلغاؤه
 function Orders() {
   const currentUser = JSON.parse(
     localStorage.getItem("currentUser")
@@ -20,6 +21,7 @@ function Orders() {
 const allOrders =
   JSON.parse(localStorage.getItem("orders")) || [];
 
+// بنفلتر الأوردرات ونجيب اللي تخص المستخدم الحالي بس
 const orders = currentUser
   ? allOrders.filter(
       (order) =>
@@ -27,6 +29,7 @@ const orders = currentUser
     )
   : [];
   // Get payment method name
+  // بتحوّل كود طريقة الدفع (cod/card/paypal) لاسم مقروء
   const getPaymentMethod = (method) => {
     switch (method) {
       case "cod":
@@ -44,6 +47,7 @@ const orders = currentUser
   };
 
   // Cancel Order
+  // بتلغي الأوردر (بتمسحه من الـ localStorage) بعد تأكيد وبتعمل ريفريش للصفحة
   function handleCancelOrder(orderId) {
     const confirmCancel = window.confirm(
       "Are you sure you want to cancel this order?"

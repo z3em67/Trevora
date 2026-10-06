@@ -9,6 +9,7 @@ const categories = [
   "sunglasses",
 ];
 
+// صفحة منتجات البائع: إضافة منتج جديد وتعديل الاسم والسعر وزيادة/تقليل المخزون ومسح المنتجات
 function SellerProducts() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,10 +25,13 @@ function SellerProducts() {
   const [editPrice, setEditPrice] = useState("");
 
   // Get products
+  // أول ما الصفحة تفتح بنجيب المنتجات
   useEffect(() => {
+    // بتجيب منتجات الأقسام من الـ API وتضيف عليها منتجات البائع المحفوظة وتشيل المحذوفة
     async function getProducts() {
       try {
         const results = await Promise.all(
+          // بتجيب منتجات كل قسم من الـ API
           categories.map(async (category) => {
             const response = await fetch(`
               https://dummyjson.com/products/category/${category}
@@ -66,6 +70,7 @@ function SellerProducts() {
   }, []);
 
   // Add Product
+  // بتضيف منتج جديد: بتتأكد إن كل الخانات مكتوبة وتحفظه في الـ localStorage وفي الشاشة وتفضّي الفورم
   function handleAddProduct(e) {
     e.preventDefault();
 
@@ -109,6 +114,7 @@ function SellerProducts() {
   }
 
   // Increase Stock
+  // بتزوّد مخزون المنتج واحد وتحفظ التغيير
   function increaseStock(id) {
     setProducts((prevProducts) => {
       const updatedProducts = prevProducts.map((product) =>
@@ -127,6 +133,7 @@ function SellerProducts() {
   }
 
   // Decrease Stock
+  // بتقلّل مخزون المنتج واحد (مبتنزلش عن صفر) وتحفظ التغيير
   function decreaseStock(id) {
     setProducts((prevProducts) => {
       const updatedProducts = prevProducts.map((product) =>
@@ -145,6 +152,7 @@ function SellerProducts() {
   }
 
   // Save seller products
+  // بتحفظ التعديلات في منتجات البائع المخزنة في الـ localStorage
   function saveSellerProducts(allProducts) {
     const sellerProducts =
       JSON.parse(localStorage.getItem("sellerProducts")) || [];
@@ -166,6 +174,7 @@ function SellerProducts() {
   }
 
   // Delete Product
+  // بتمسح المنتج بعد تأكيد: بتشيله من الشاشة ومن منتجات البائع وتسجّل الـ id في المحذوفات
   function deleteProduct(id) {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this product?"
@@ -206,6 +215,7 @@ function SellerProducts() {
   }
 
   // Start Edit
+  // بتفتح وضع تعديل المنتج وتملا خانات الاسم والسعر بالقيم الحالية
   function startEdit(product) {
     setEditingId(product.id);
     setEditName(product.title);
@@ -213,6 +223,7 @@ function SellerProducts() {
   }
 
   // Save Edit
+  // بتحفظ الاسم والسعر الجداد للمنتج وتقفل وضع التعديل
   function saveEdit(id) {
     setProducts((prevProducts) => {
       const updatedProducts = prevProducts.map((product) =>

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { LuMessageCircle, LuX, LuSend } from "react-icons/lu";
 import "./ChatBot.css";
 
+// شات بوت المتجر: بيرد على الزبون بنتايج منتجات حسب اسم المنتج أو القسم أو السعر (من غير ذكاء اصطناعي، بحث بسيط)
 function ChatBot() {
 
     const [products, setProducts] = useState([]);
@@ -13,17 +14,21 @@ function ChatBot() {
     const inputRef = useRef(null);
 
     // Scroll to newest message
+    // كل ما الشات يتحدّث أو يتفتح بينزل لآخر رسالة
     useEffect(() => {
         chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [chat, isOpen]);
 
     // Focus input when the window opens
+    // لما الشات يتفتح ويخلّص التحميل بنركّز على خانة الكتابة
     useEffect(() => {
         if (isOpen && !loading) inputRef.current?.focus();
     }, [isOpen, loading]);
 
     // Close with Escape
+    // بنقفل الشات لما نضغط Escape وبننضّف الـ listener لما الكومبوننت يتشال
     useEffect(() => {
+        // بتقفل الشات لو الزرار المضغوط Escape
         function onKey(e) {
             if (e.key === "Escape") setIsOpen(false);
         }
@@ -32,6 +37,7 @@ function ChatBot() {
     }, []);
 
     // Get products from API
+    // بنجيب كل المنتجات من الـ API مرة واحدة عشان البوت يبحث فيها
     useEffect(() => {
 
         fetch("https://dummyjson.com/products?limit=0")
@@ -48,6 +54,7 @@ function ChatBot() {
     }, []);
 
     // Send message
+    // بتبعت رسالة اليوزر وتطلّع الرد: بتفهم التحية، أو البحث بالسعر (أقل من X)، أو البحث بالكلمات في اسم/قسم/وصف المنتج، وبتعرض أول 10 نتايج
     function sendMessage() {
 
         if (message.trim() === "" || loading) {
@@ -166,6 +173,7 @@ function ChatBot() {
             );
 
             // Search in product data
+            // بنفلتر المنتجات اللي كل كلمات البحث موجودة في (اسمها + قسمها + وصفها)
             results = products.filter((product) => {var productInfo = (
                     product.title + " " +
                     product.category + " " +

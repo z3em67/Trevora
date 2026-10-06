@@ -1,6 +1,7 @@
 import React from "react";
 import "./About.css";
 
+// صفحة "من نحن": كلام ثابت عن المتجر ومميزاته والأقسام اللي بيقدمها
 function About() {
   return (
     <div className="about-page">

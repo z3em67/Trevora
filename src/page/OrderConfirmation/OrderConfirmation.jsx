@@ -11,13 +11,16 @@ import {
 import PageTransition from "../../components/PageTransition";
 import "./OrderConfirmation.css";
 
+// صفحة تأكيد الطلب: بتعرض بيانات الأوردر اللي لسه متعمل (رقم وإجمالي ودفع وحالة) أو رسالة "مش موجود"
 function OrderConfirmation() {
   const { orderId } = useParams();
 
   const orders = JSON.parse(localStorage.getItem("orders")) || [];
 
+  // بندوّر على الأوردر برقمه من الرابط
   const order = orders.find((item) => item.id.toString() === orderId);
 
+  // بتحوّل كود طريقة الدفع لاسم مقروء
   const getPaymentMethod = () => {
     if (!order?.payment?.method) {
       return "Not specified";

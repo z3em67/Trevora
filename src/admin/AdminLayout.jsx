@@ -14,6 +14,7 @@ const links = [
   { to: "/admin/banners", label: "Homepage Banners", icon: <LuImage /> },
 ];
 
+// اللاي أوت بتاع لوحة الأدمن: سايد بار فيه اللينكات + زرار رجوع للمتجر + زرار تسجيل خروج، والصفحة نفسها بتتعرض في الـ Outlet
 export default function AdminLayout() {
   const navigate = useNavigate();
   return (
@@ -29,6 +30,7 @@ export default function AdminLayout() {
         </nav>
         <div className="adm_side_foot">
           <Link to="/"><LuStore /><span>View store</span></Link>
+          {/* تسجيل الخروج من لوحة الأدمن: بنمسح المستخدم الحالي ونروّحه لصفحة اللوجين */}
           <button type="button" onClick={() => { localStorage.removeItem("currentUser"); navigate("/login"); }}>
             <LuLogOut /><span>Logout</span>
           </button>

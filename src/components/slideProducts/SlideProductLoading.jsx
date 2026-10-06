@@ -1,5 +1,6 @@
 import React from 'react'
 
+// هيكل تحميل (skeleton) بيظهر مكان سلايدر المنتجات لحد ما البيانات توصل
 function SlideProductLoading() {
   return (
     <div className='loading_SlideProduct'>

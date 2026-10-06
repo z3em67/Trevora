@@ -10,7 +10,9 @@ import 'swiper/css/navigation';
 import {Autoplay , Navigation } from 'swiper/modules';
 
 
+// سلايدر منتجات لقسم معين: عنوان ولينك "View all" وسوايبر بكروت المنتجات
 function SlideProduct({data , title, slug}) {
+  // الـ loop والتشغيل التلقائي بيشتغلوا بس لو المنتجات أكتر من 6
   const canLoop = data.length > 6
 
   return (

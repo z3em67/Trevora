@@ -9,7 +9,9 @@ import { LuArrowRight } from "react-icons/lu";
 import { getBanners } from '../admin/adminStore';
 import { DEFAULT_BANNERS, resolveImg } from '../admin/defaultBanners';
 
+// سلايدر البانرات الكبير في الصفحة الرئيسية: بيجيب البانرات من الأدمن (أو الافتراضية) ويعرض المفعّلة بس
 function HeroSlider() {
+  // بنجيب البانرات من الـ store ولو مفيش بنستخدم الافتراضية، وبعدين بنفلتر على المفعّل بس
   const slides = (getBanners() || DEFAULT_BANNERS).filter((b) => b.active);
   if (slides.length === 0) return null;
   return (

@@ -6,6 +6,7 @@ import "./header.css";
 import { CartContext } from "../context/CartContext";
 import SerachBox from "./SerachBox";
 
+// الهيدر العلوي: اللوجو وصندوق البحث وأيقونات المفضلة والسلة مع عدّاد العناصر
 function TopHeader() {
   const { cartItems, favorites } = useContext(CartContext);
 

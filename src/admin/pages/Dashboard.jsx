@@ -4,17 +4,21 @@ import { LuUsers, LuPackage, LuShoppingBag, LuDollarSign } from "react-icons/lu"
 import { getUsers, getOrders, getCustomProducts, ORDER_STATUSES } from "../adminStore";
 import { Badge, PageHead } from "../ui";
 
+// لوحة المعلومات الرئيسية للأدمن: أعداد المستخدمين والأوردرات والإيرادات والمنتجات + رسم بسيط للأوردرات حسب الحالة + آخر 5 أوردرات
 export default function Dashboard() {
   const { users, orders, custom } = useMemo(
     () => ({ users: getUsers(), orders: getOrders(), custom: getCustomProducts() }),
     []
   );
+  // الإيرادات: مجموع إجمالي الأوردرات من غير الملغية
   const revenue = orders
     .filter((o) => o.status !== "Cancelled")
     .reduce((s, o) => s + Number(o.total || 0), 0);
+  // بتحسب عدد الأوردرات في كل حالة
   const byStatus = ORDER_STATUSES.map((s) => ({
     s, n: orders.filter((o) => (o.status || "Pending") === s).length,
   }));
+  // أكبر عدد أوردرات في حالة واحدة (بنستخدمه لحساب عرض الأعمدة)
   const max = Math.max(1, ...byStatus.map((b) => b.n));
 
   return (

@@ -13,6 +13,7 @@ import {
   LuTriangleAlert,
 } from "react-icons/lu";
 
+// بتقرا قيمة JSON من الـ localStorage وترجّع القيمة الافتراضية لو مفيش أو حصل خطأ
 function readJSON(key, fallback) {
   try {
     return JSON.parse(localStorage.getItem(key)) ?? fallback;
@@ -21,12 +22,14 @@ function readJSON(key, fallback) {
   }
 }
 
+// بتطلّع الحروف الأولى من الاسم (حرفين على الأكتر) عشان تتعرض في الأفاتار
 function getInitials(name = "") {
   const parts = name.trim().split(/\s+/).filter(Boolean);
   if (!parts.length) return "?";
   return (parts[0][0] + (parts[1]?.[0] || "")).toUpperCase();
 }
 
+// صفحة البروفايل: عرض بيانات الحساب وتعديل الاسم والإيميل ومسح الحساب
 function Profile() {
   const [user, setUser] = useState(() => readJSON("currentUser", null));
 
@@ -54,6 +57,7 @@ function Profile() {
     );
   }
 
+  // بتتأكد إن الاسم والإيميل صح (والإيميل بشكل سليم) وبتحط الأخطاء وبترجّع true لو مفيش أخطاء
   function validate() {
     const next = {};
     if (!name.trim()) next.name = "Name is required";
@@ -64,6 +68,7 @@ function Profile() {
     return Object.keys(next).length === 0;
   }
 
+  // بتفتح وضع التعديل وتملا الخانات بالبيانات الحالية
   function startEditing() {
     setName(user.name || "");
     setEmail(user.email || "");
@@ -71,11 +76,13 @@ function Profile() {
     setIsEditing(true);
   }
 
+  // بتلغي التعديل وتمسح الأخطاء
   function cancelEditing() {
     setErrors({});
     setIsEditing(false);
   }
 
+  // بتحفظ التعديلات في currentUser وفي قايمة المستخدمين وتحدّث الشاشة
   function handleSave(e) {
     e.preventDefault();
     if (!validate()) return;
@@ -95,6 +102,7 @@ function Profile() {
     toast.success("Profile updated");
   }
 
+  // بتمسح الحساب من قايمة المستخدمين ومن currentUser وتودّي لصفحة الدخول
   function handleDeleteAccount() {
     const users = readJSON("users", []);
     localStorage.setItem(

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+// صفحة إعداد بيانات المتجر للبائع بعد التسجيل: اسم المتجر ووصفه
 function SellerSetup() {
   const navigate = useNavigate();
 
@@ -11,6 +12,7 @@ function SellerSetup() {
   const [storeName, setStoreName] = useState("");
   const [storeDescription, setStoreDescription] = useState("");
 
+  // بتتأكد إن اسم المتجر مكتوب، وبتحدّث بيانات المستخدم الحالي وقايمة المستخدمين، وبعدين تودّيه لصفحة البائع
   function handleSubmit(e) {
     e.preventDefault();
 

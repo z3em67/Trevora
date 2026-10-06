@@ -4,6 +4,7 @@ import { CartContext } from "../../components/context/CartContext";
 import PageTransition from "../../components/PageTransition";
 import "./Checkout.css";
 
+// صفحة إتمام الشراء: بيانات الفاتورة والشحن واختيار طريقة الدفع وملخص الطلب وزرار تأكيد الأوردر
 function Checkout() {
   const { cartItems, removeFromCart } = useContext(CartContext);
   const navigate = useNavigate();
@@ -32,11 +33,13 @@ function Checkout() {
     paypalEmail: "",
   });
 
+  // إجمالي سعر السلة
   const total = cartItems.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0,
   );
 
+  // بتحدّث بيانات العميل (الاسم والعنوان...) على حسب الخانة اللي اتغيرت
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -44,6 +47,7 @@ function Checkout() {
     });
   };
 
+  // بتحدّث بيانات الدفع (الكارت أو الباي بال) على حسب الخانة اللي اتغيرت
   const handlePaymentChange = (e) => {
     setPaymentData({
       ...paymentData,
@@ -51,10 +55,12 @@ function Checkout() {
     });
   };
 
+  // بتغيّر طريقة الدفع المختارة (كاش / كارت / باي بال)
   const handlePaymentMethodChange = (e) => {
     setPaymentMethod(e.target.value);
   };
 
+  // بتأكد الأوردر: بتتأكد إن في مستخدم ومنتجات وبيانات كاملة وبيانات الدفع سليمة، وبعدين بتعمل الأوردر وتحفظه وتفضّي السلة وتودّي لصفحة التأكيد
   const handlePlaceOrder = (e) => {
     e.preventDefault();
 const currentUser = JSON.parse(
@@ -173,13 +179,13 @@ if (!currentUser) {
   return (
     <PageTransition>
       <div className="checkout container">
-        <h1 align="center">Checkout</h1>
+        <h1>Checkout</h1>
 
         <form onSubmit={handlePlaceOrder}>
           <div className="checkout_layout">
             {/* LEFT SIDE */}
             <div className="checkout_form">
-              
+              <h2>Billing Details</h2>
 
               <input
                 type="text"
@@ -205,6 +211,7 @@ if (!currentUser) {
                 onChange={handleChange}
               />
 
+              <h2>Shipping Details</h2>
 
               <input
                 type="text"
@@ -248,7 +255,7 @@ if (!currentUser) {
             </div>
 
             {/* RIGHT SIDE */}
-            <aside className="ordersummary" style={{ width: "75%" , margin: "10px auto" }} >
+            <aside className="ordersummary">
               <h2>Order Summary</h2>
 
               {cartItems.map((item) => (

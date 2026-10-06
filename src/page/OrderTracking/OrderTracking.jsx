@@ -17,15 +17,19 @@ import PageTransition from "../../components/PageTransition";
 
 import "./OrderTracking.css";
 
+// صفحة تتبع الأوردر: بتعرض مراحل الأوردر (تم الطلب → تأكيد → تجهيز → شحن → توصيل) وبيانات الشحن وعناصر الأوردر
 function OrderTracking() {
   const { orderId } = useParams();
 
   // Get all orders from localStorage
+  // بنقرا كل الأوردرات من الـ localStorage
   const orders = JSON.parse(localStorage.getItem("orders")) || [];
 
   // Find current order
+  // بندوّر على الأوردر برقمه من الرابط
   const order = orders.find((item) => item.id.toString() === orderId);
 
+  // مراحل الأوردر بالترتيب (الاسم والعنوان والأيقونة لكل مرحلة)
   const statuses = [
     {
       name: "Pending",
@@ -58,14 +62,17 @@ function OrderTracking() {
     },
   ];
 
+  // الحالة الحالية للأوردر
   const [currentStatus, setCurrentStatus] = useState(
     order?.status || "Pending",
   );
 
+  // ترتيب الحالة الحالية في قايمة المراحل (عشان نعرف أنهي مراحل خلصت)
   const currentIndex = statuses.findIndex(
     (status) => status.name.toLowerCase() === currentStatus.toLowerCase(),
   );
 
+  // بتنقل الأوردر للمرحلة اللي بعدها وتحفظها في الـ localStorage (بتظهر للأدمن بس)
   const handleNextStatus = () => {
 
     if (!order) return;

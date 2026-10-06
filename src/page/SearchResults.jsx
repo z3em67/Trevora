@@ -5,13 +5,16 @@ import SlideProductLoading from "../components/slideProducts/SlideProductLoading
 import Product from "../components/slideProducts/Product";
 import { applyCatalog } from "../admin/adminStore";
 
+// صفحة نتايج البحث: بتاخد كلمة البحث من الرابط وتعرض المنتجات المطابقة
 function SearchResults() {
   const [results, setResults] = useState([]);
   const query = new URLSearchParams(useLocation().search).get("query");
 
   const [loading, setLoading] = useState(true);
 
+  // كل ما كلمة البحث تتغير بنجيب النتايج من جديد
   useEffect(() => {
+    // بتبعت طلب البحث للـ API وتطبّق تعديلات الأدمن على النتايج
     const fetchResults = async () => {
       setLoading(true);
       try {

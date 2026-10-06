@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 
+// معرض صور المنتج: صورة كبيرة وصور صغيرة تدوس عليها عشان تغيّر الصورة الكبيرة
 function ProductImages({product}) {
   const [active, setActive] = useState(0)
 

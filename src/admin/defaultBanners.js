@@ -4,6 +4,7 @@ import bannerHero3 from "../img/banner_Hero3.jpg";
 
 // Built-in images are stored as "builtin:N" so saved banners survive rebuilds
 const BUILTIN = { "builtin:1": bannerHero1, "builtin:2": bannerHero2, "builtin:3": bannerHero3 };
+// بتحوّل "builtin:N" للصورة الحقيقية، ولو الصورة لينك أو base64 بترجّعها زي ما هي
 export const resolveImg = (img) => BUILTIN[img] || img;
 
 export const DEFAULT_BANNERS = [
