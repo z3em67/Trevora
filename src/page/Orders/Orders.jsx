@@ -234,6 +234,7 @@ const orders = currentUser
 
                     {/* Cancel Order */}
                     <button
+                    style={{marginLeft:"20px"}}
                       className="btn cancel_order_btn"
                       onClick={() =>
                         handleCancelOrder(order.id)

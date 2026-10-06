@@ -10,7 +10,9 @@ function Register() {
 const [phone, setPhone] = useState("");
   const navigate = useNavigate();
 
-  // بتتأكد إن التليفون 11 رقم والإيميل مش مستخدم، وبتعمل المستخدم وتحفظه وتسجّله دخول، وبعدين تودّيه لإعداد المتجر لو بائع أو للرئيسية
+  // بتتأكد إن التليفون 11 رقم والإيميل مش مستخدم، وبتعمل 
+  // المستخدم وتحفظه وتسجّله دخول، وبعدين
+  //  تودّيه لإعداد المتجر لو بائع أو للرئيسية
   function handleRegister(e) {
     e.preventDefault();
     if (phone.length !== 11) {
@@ -77,7 +79,7 @@ if (role === "seller") {
           value={phone}
           maxLength="11"
           onChange={(e) => {
-            // بتقبل أرقام بس في خانة التليفون
+            
             const value = e.target.value;
 
             if (/^\d*$/.test(value)) {

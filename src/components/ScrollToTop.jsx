@@ -7,11 +7,11 @@ function ScrollToTop() {
     const { pathname} = useLocation();
 
 
-    // بيشتغل كل ما الـ pathname يتغير ويرجّع الصفحة لأول نقطة
+    
     useEffect(() => {
         window.scrollTo({
             top: 0,
-            // behavior: "smooth"
+          
         })
     }, [pathname])
 

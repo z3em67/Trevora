@@ -55,7 +55,7 @@ function BtmHeader() {
       .catch((error) => console.error(error));
   }, []);
 
-  // بنقفل قايمة الأقسام لو داس برّاها أو ضغط Escape، وبننضّف الـ listeners لما الكومبوننت يتشال
+
   useEffect(() => {
     // بتقفل قايمة الأقسام لو الضغطة كانت برّا القايمة
     const close = (e) => {

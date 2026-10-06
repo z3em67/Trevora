@@ -16,14 +16,14 @@ const perks = [
 ];
 
 
-// الصفحة الرئيسية: السلايدر الكبير + مميزات المتجر + سلايدر منتجات لكل قسم مميز + الشات بوت
+
 function Home() {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState({});
 
   const [loading, setLoading] = useState(true);
 
-  // أول ما الصفحة تفتح بنجيب المنتجات
+  
   useEffect(() => {
     // بتجيب الأقسام المميزة الظاهرة، وبعدين منتجات كل قسم (المضافة + منتجات الـ API بعد تعديلات الأدمن) وبتشيل الأقسام الفاضية
     const fetchProducts = async () => {

@@ -75,7 +75,7 @@ function Product({item}) {
     try {
       if (navigator.share) await navigator.share({ title: item.title, url })
       else { await navigator.clipboard.writeText(url); toast.success('Link copied') }
-    } catch { /* share dismissed */ }
+    } catch {  }
   }
 
   // نسبة الخصم متقرّبة لأقرب رقم صحيح

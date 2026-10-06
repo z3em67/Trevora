@@ -19,7 +19,7 @@ function SerachBox() {
     setSuggestions([]);
   };
 
-  // بنجيب اقتراحات المنتجات من الـ API بعد ما اليوزر يقف عن الكتابة 300ms (debounce)
+  
   useEffect(() => {
     // بتبعت طلب بحث للـ API وبتاخد أول 5 نتايج بس كاقتراحات، ولو الخانة فاضية بتفضّي الاقتراحات
     const fetchSuggestions = async () => {
@@ -47,7 +47,7 @@ function SerachBox() {
 
   // بنقفل الاقتراحات لو داس برّا صندوق البحث
   useEffect(() => {
-    // بتفضّي الاقتراحات لو الضغطة برّا الصندوق
+  
     const close = (e) => {
       if (boxRef.current && !boxRef.current.contains(e.target)) setSuggestions([]);
     };

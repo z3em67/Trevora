@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import "./cart.css";
 import PageTransition from "../../components/PageTransition";
 
-// صفحة السلة: المنتجات وتحكم في الكمية والمسح وملخص الطلب وزرار الدفع
+
 function Cart() {
   const { cartItems, increaseQuantity, decreaseQuantity, removeFromCart } =
     useContext(CartContext);
