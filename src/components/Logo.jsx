@@ -1,6 +1,5 @@
 import React from "react";
 
-// كومبوننت اللوجو: بيرسم أيقونة البرق مع اسم ELECTROHUB
 function Logo() {
   return (
     <span className="brand_logo">

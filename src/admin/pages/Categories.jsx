@@ -3,14 +3,12 @@ import toast from "react-hot-toast";
 import { mergeCategories, persistCategories, slugify, getCustomProducts } from "../adminStore";
 import { Badge, Modal, PageHead } from "../ui";
 
-// صفحة إدارة الأقسام: إعادة تسمية، إخفاء، تمييز في الصفحة الرئيسية، وإضافة/مسح أقسام جديدة
 export default function Categories() {
   const [apiCats, setApiCats] = useState([]);
   const [cats, setCats] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(null); // {slug?, name}
 
-  // بنجيب الأقسام من الـ API أول ما الصفحة تفتح وندمجها مع إعدادات الأدمن
   useEffect(() => {
     fetch("https://dummyjson.com/products/categories")
       .then((r) => r.json())
@@ -19,12 +17,9 @@ export default function Categories() {
       .finally(() => setLoading(false));
   }, []);
 
-  // بتحفظ قايمة الأقسام وتحدّث الشاشة
   const commit = (list) => { persistCategories(list); setCats(list); };
-  // بتعدّل قسم واحد (بالـ slug) بالقيم الجديدة
   const patch = (slug, p) => commit(cats.map((c) => (c.slug === slug ? { ...c, ...p } : c)));
 
-  // بتحفظ من الـ Modal: إما إعادة تسمية قسم موجود أو إضافة قسم جديد (مع التأكد إنه مش متكرر)
   const save = () => {
     const name = modal.name.trim();
     if (!name) return toast.error("Name is required");
@@ -41,7 +36,6 @@ export default function Categories() {
     setModal(null);
   };
 
-  // بتمسح قسم مضاف، بس لو مفيش منتجات مستخدماه، وبعد تأكيد
   const remove = (c) => {
     const used = getCustomProducts().some((p) => p.category === c.slug);
     if (used) return toast.error("Move or delete the products in this category first");

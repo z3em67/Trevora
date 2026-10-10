@@ -3,23 +3,19 @@ import toast from "react-hot-toast";
 import { getUsers, updateUser, deleteUser, getCurrentUser } from "../adminStore";
 import { Badge, PageHead } from "../ui";
 
-// صفحة إدارة المستخدمين: بحث وفلتر بالدور وتغيير الدور وحظر/فك حظر ومسح (ومينفعش تعدّل نفسك)
 export default function Users() {
   const [users, setUsers] = useState(getUsers);
   const [q, setQ] = useState("");
   const [role, setRole] = useState("all");
   const me = getCurrentUser();
 
-  // المستخدمين بعد الفلتر بالدور والبحث (اسم/إيميل/تليفون)
   const list = users.filter(
     (u) =>
       (role === "all" || u.role === role) &&
       `${u.name} ${u.email} ${u.phone || ""}`.toLowerCase().includes(q.toLowerCase())
   );
 
-  // بتعدّل بيانات مستخدم (دور أو حظر) وتحدّث القايمة وتظهر رسالة نجاح
   const change = (u, patch, msg) => { setUsers(updateUser(u.id, patch)); toast.success(msg); };
-  // بتمسح مستخدم بعد تأكيد
   const remove = (u) => {
     if (!window.confirm(`Delete ${u.name}?`)) return;
     setUsers(deleteUser(u.id));

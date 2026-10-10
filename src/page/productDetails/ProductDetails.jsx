@@ -9,7 +9,6 @@ import ProductInfo from "./ProductInfo";
 import PageTransition from "../../components/PageTransition";
 import { getCustomProducts, applyCatalog, customProductsFor } from "../../admin/adminStore";
 
-// صفحة تفاصيل المنتج: صور + معلومات + سلايدر منتجات من نفس القسم
 function ProductDetails() {
   const { id } = useParams();
 
@@ -19,9 +18,7 @@ function ProductDetails() {
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [loadingRelatedProducts, setLoadingRelatedProducts] = useState(true);
 
-  // كل ما الـ id يتغير بنجيب المنتج
   useEffect(() => {
-    // بتدوّر على المنتج في المنتجات المضافة الأول، ولو مش موجود بتجيبه من الـ API وتطبّق عليه تعديلات الأدمن
     const fetchProduct = async () => {
       try {
         // Products added from the admin dashboard live in localStorage
@@ -42,7 +39,6 @@ function ProductDetails() {
     fetchProduct();
   }, [id]);
 
-  // بعد ما المنتج يتحمّل بنجيب منتجات نفس القسم كمنتجات مشابهة
   useEffect(() => {
     if (!product) return;
     fetch(`https://dummyjson.com/products/category/${product.category}`)

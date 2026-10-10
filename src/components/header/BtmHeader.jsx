@@ -19,7 +19,6 @@ const NavLinks = [
   { title: "Orders", link: "/orders" },
 ];
 
-// الهيدر السفلي: قايمة الأقسام، لينكات الصفحات، وأزرار الدخول/التسجيل/الخروج/الأدمن/البروفايل
 function BtmHeader() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -27,11 +26,9 @@ function BtmHeader() {
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // حالة تسجيل الدخول: true لو في مستخدم متخزن في الـ localStorage
   const [isLoggedIn, setIsLoggedIn] = useState(
   !!localStorage.getItem("currentUser")
 );
-  // دالة بتتنفذ على طول وبتشوف لو المستخدم الحالي role بتاعه admin (عشان نظهر زرار الأدمن)
   const isAdminUser = (() => {
     try { return JSON.parse(localStorage.getItem("currentUser"))?.role === "admin"; }
     catch { return false; }
@@ -40,14 +37,12 @@ function BtmHeader() {
 
  
 
-  // كل ما الصفحة تتغير: بنقفل قايمة الأقسام والمنيو وبنحدّث حالة تسجيل الدخول
   useEffect(() => {
   setIsCategoryOpen(false);
   setIsMenuOpen(false);
 
   setIsLoggedIn(!!localStorage.getItem("currentUser"));
 }, [location]);
-  // بنجيب الأقسام من الـ API (مرة واحدة) وبنخبّي اللي الأدمن مخبّيه
   useEffect(() => {
     fetch("https://dummyjson.com/products/categories")
       .then((res) => res.json())
@@ -55,14 +50,11 @@ function BtmHeader() {
       .catch((error) => console.error(error));
   }, []);
 
-
   useEffect(() => {
-    // بتقفل قايمة الأقسام لو الضغطة كانت برّا القايمة
     const close = (e) => {
       if (categoryRef.current && !categoryRef.current.contains(e.target))
         setIsCategoryOpen(false);
     };
-    // بتقفل قايمة الأقسام لما يضغط زرار Escape
     const esc = (e) => e.key === "Escape" && setIsCategoryOpen(false);
     document.addEventListener("mousedown", close);
     document.addEventListener("keydown", esc);
@@ -138,7 +130,6 @@ function BtmHeader() {
  <button
   className="logout_btn"
   onClick={() => {
-    // تسجيل الخروج: بنمسح المستخدم من الـ localStorage ونحدّث الحالة ونرجّعه للصفحة الرئيسية
     localStorage.removeItem("currentUser");
     setIsLoggedIn(false);
     alert("Logout successful");

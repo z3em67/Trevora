@@ -9,7 +9,6 @@ const categories = [
   "sunglasses",
 ];
 
-// صفحة منتجات البائع: إضافة منتج جديد وتعديل الاسم والسعر وزيادة/تقليل المخزون ومسح المنتجات
 function SellerProducts() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -19,22 +18,17 @@ function SellerProducts() {
   const [stock, setStock] = useState("");
   const [category, setCategory] = useState("smartphones");
 
-  // Edit
   const [editingId, setEditingId] = useState(null);
   const [editName, setEditName] = useState("");
   const [editPrice, setEditPrice] = useState("");
 
-  // Get products
-  // أول ما الصفحة تفتح بنجيب المنتجات
   useEffect(() => {
-    // بتجيب منتجات الأقسام من الـ API وتضيف عليها منتجات البائع المحفوظة وتشيل المحذوفة
     async function getProducts() {
       try {
         const results = await Promise.all(
-          // بتجيب منتجات كل قسم من الـ API
           categories.map(async (category) => {
-            const response = await fetch(`
-              https://dummyjson.com/products/category/${category}
+            const response = await fetch(
+             ` https://dummyjson.com/products/category/${category}
             `);
 
             const data = await response.json();
@@ -69,12 +63,10 @@ function SellerProducts() {
     getProducts();
   }, []);
 
-  // Add Product
-  // بتضيف منتج جديد: بتتأكد إن كل الخانات مكتوبة وتحفظه في الـ localStorage وفي الشاشة وتفضّي الفورم
   function handleAddProduct(e) {
     e.preventDefault();
 
-    if (!name  ||!price  ||!stock) {
+    if (!name || !price||  !stock) {
       alert("Please fill in all fields.");
       return;
     }
@@ -113,8 +105,6 @@ function SellerProducts() {
     alert("Product added successfully!");
   }
 
-  // Increase Stock
-  // بتزوّد مخزون المنتج واحد وتحفظ التغيير
   function increaseStock(id) {
     setProducts((prevProducts) => {
       const updatedProducts = prevProducts.map((product) =>
@@ -132,8 +122,6 @@ function SellerProducts() {
     });
   }
 
-  // Decrease Stock
-  // بتقلّل مخزون المنتج واحد (مبتنزلش عن صفر) وتحفظ التغيير
   function decreaseStock(id) {
     setProducts((prevProducts) => {
       const updatedProducts = prevProducts.map((product) =>
@@ -151,8 +139,6 @@ function SellerProducts() {
     });
   }
 
-  // Save seller products
-  // بتحفظ التعديلات في منتجات البائع المخزنة في الـ localStorage
   function saveSellerProducts(allProducts) {
     const sellerProducts =
       JSON.parse(localStorage.getItem("sellerProducts")) || [];
@@ -173,8 +159,6 @@ function SellerProducts() {
     );
   }
 
-  // Delete Product
-  // بتمسح المنتج بعد تأكيد: بتشيله من الشاشة ومن منتجات البائع وتسجّل الـ id في المحذوفات
   function deleteProduct(id) {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this product?"
@@ -182,13 +166,11 @@ function SellerProducts() {
 
     if (!confirmDelete) {
       return;
-    }// Remove from current page
+    }
+
     setProducts((prevProducts) =>
       prevProducts.filter((product) => product.id !== id)
-    );
-
-    // If it is a seller-added product, remove it from localStorage
-    const savedProducts =
+    );const savedProducts =
       JSON.parse(localStorage.getItem("sellerProducts")) || [];
 
     const updatedSavedProducts = savedProducts.filter(
@@ -200,7 +182,6 @@ function SellerProducts() {
       JSON.stringify(updatedSavedProducts)
     );
 
-    // Save deleted API product IDs
     const deletedProducts =
       JSON.parse(localStorage.getItem("deletedProducts")) || [];
 
@@ -214,16 +195,12 @@ function SellerProducts() {
     }
   }
 
-  // Start Edit
-  // بتفتح وضع تعديل المنتج وتملا خانات الاسم والسعر بالقيم الحالية
   function startEdit(product) {
     setEditingId(product.id);
     setEditName(product.title);
     setEditPrice(product.price);
   }
 
-  // Save Edit
-  // بتحفظ الاسم والسعر الجداد للمنتج وتقفل وضع التعديل
   function saveEdit(id) {
     setProducts((prevProducts) => {
       const updatedProducts = prevProducts.map((product) =>
@@ -257,11 +234,13 @@ function SellerProducts() {
 
   return (
     <div className="seller_products">
+
       <h1>My Products</h1>
 
       {/* Add Product */}
 
       <form onSubmit={handleAddProduct}>
+
         <input
           type="text"
           placeholder="Product Name"
@@ -280,7 +259,9 @@ function SellerProducts() {
           value={category}
           onChange={(e) => setCategory(e.target.value)}
         >
-          <option value="smartphones">Smartphones</option>
+          <option value="smartphones">
+            Smartphones
+          </option>
 
           <option value="mobile-accessories">
             Mobile Accessories
@@ -309,111 +290,175 @@ function SellerProducts() {
         <button type="submit">
           Add Product
         </button>
+
       </form>
 
+
       {/* Products */}
+{/* Products */}
 
-      <div className="seller_product_list">
-        {products.map((product) => (
-          <div
-            className="seller_product_card"
-            key={product.id}
-          >
-            {product.thumbnail && (
-              <img
-                src={product.thumbnail}
-                alt={product.title}
-                width="120"
-              />
-            )}
+<div className="seller_product_list">
 
-            {editingId === product.id ? (
-              <>
-                <input
-                  type="text"
-                  value={editName}
-                  onChange={(e) =>
-                    setEditName(e.target.value)
-                  }
-                />
+  {/* Table Header */}
 
-                <input
-                  type="number"
-                  value={editPrice}
-                  onChange={(e) =>
-                    setEditPrice(e.target.value)
-                  }
-                />
+  <div className="seller_product_header">
 
-                <button
-                  type="button"
-                  onClick={() =>
-                    saveEdit(product.id)
-                  }
-                >
-                  Save
-                </button>
-              </>
-            ) : (
-              <>
-                <h3>{product.title}</h3><p>
-                  Price: ${product.price}
-                </p>
+    <span>TITLE</span>
 
-                <p>
-                  Category: {product.category}
-                </p>
+    <span>CATEGORY</span>
 
-                <p>
-                  Stock: {product.stock ?? 0}
-                </p>
+    <span>PRICE</span>
 
-                <button
-                  type="button"
-                  onClick={() =>
-                    startEdit(product)
-                  }
-                >
-                  Edit
-                </button>
-              </>
-            )}
+    <span>STOCK</span>
 
-            <div>
-              <button
-                type="button"
-                onClick={() =>
-                  decreaseStock(product.id)
-                }
-              >
-                -
-              </button>
+    <span>ACTIONS</span>
 
-              <span>
-                {product.stock ?? 0}
-              </span>
+  </div>
 
-              <button
-                type="button"
-                onClick={() =>
-                  increaseStock(product.id)
-                }
-              >
-                +
-              </button>
-            </div>
 
-            <button
-              type="button"
-              onClick={() =>
-                deleteProduct(product.id)
-              }
-            >
-              Delete
-            </button>
-          </div>
-        ))}
+  {/* Products */}
+
+  {products.map((product) => (
+
+    <div
+      className="seller_product_card"
+      key={product.id}
+    >
+
+      {/* Title + Image */}
+
+      <div className="product_title">
+
+        {product.thumbnail && (
+          <img
+            src={product.thumbnail}
+            alt={product.title}
+          />
+        )}
+
+        {editingId === product.id ? (
+
+          <input
+            type="text"
+            value={editName}
+            onChange={(e) =>
+              setEditName(e.target.value)
+            }
+          />
+
+        ) : (
+
+          <h3>{product.title}</h3>
+
+        )}
+
       </div>
+
+
+      {/* Category */}
+
+      <div className="product_category">
+        {product.category}
+      </div>
+
+
+      {/* Price */}
+
+      <div className="product_price">
+
+        {editingId === product.id ? (
+
+          <input
+            type="number"
+            value={editPrice}
+            onChange={(e) =>
+              setEditPrice(e.target.value)
+            }
+          />
+
+        ) : (
+
+          <span>${product.price}</span>
+
+        )}
+
+      </div>
+
+
+      {/* Stock */}
+
+      <div className="product_stock">
+
+        <button
+          type="button"
+          onClick={() =>
+            decreaseStock(product.id)
+          }
+        >
+          -
+        </button>
+
+        <span>
+          {product.stock ?? 0}
+        </span>
+
+        <button
+          type="button"
+          onClick={() =>
+            increaseStock(product.id)
+          }
+        >
+          +
+        </button>
+
+      </div>
+
+
+      {/* Actions */}
+
+      <div className="product_actions">
+
+        {editingId === product.id ? (
+
+          <button
+            type="button"
+            onClick={() =>
+              saveEdit(product.id)
+            }
+          >
+            Save
+          </button>
+
+        ) : (
+
+          <button
+            type="button"
+            onClick={() =>
+              startEdit(product)
+            }
+          >
+            Edit
+          </button>
+
+        )}
+
+        <button
+          type="button"
+          onClick={() =>
+            deleteProduct(product.id)
+          }
+        >
+          Delete
+        </button>
+
+      </div>
+
+    </div>
+
+  ))}
+
+</div>
+
     </div>
   );
 }

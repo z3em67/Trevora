@@ -1,7 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 
-// كومبوننت بيلفّ أي صفحة بأنيميشن دخول وخروج (fade + حركة بسيطة لفوق/تحت)
 function PageTransition({children}) {
   return (
     <motion.div

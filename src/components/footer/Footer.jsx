@@ -7,7 +7,6 @@ import "./footer.css";
 
 const shop = ["smartphones", "laptops", "tablets", "mobile-accessories", "sunglasses"];
 
-// الفوتر: اللوجو وسوشيال ميديا ولينكات الأقسام وخدمة العملاء وبيانات التواصل
 function Footer() {
   return (
     <footer className="site_footer">

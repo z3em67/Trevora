@@ -1,6 +1,5 @@
 import React from 'react'
 
-// هيكل تحميل (skeleton) بيظهر مكان تفاصيل المنتج لحد ما البيانات توصل
 function ProductDetailsLoading() {
   return (
     <div className='loading_Item'>

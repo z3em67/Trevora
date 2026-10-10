@@ -1,14 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-// صفحة تسجيل الدخول: إيميل وباسورد وبتتحقق من المستخدمين المخزنين
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
 
-  // بتدوّر على مستخدم بنفس الإيميل والباسورد، وترفض لو غلط أو محظور، ولو تمام بتحفظه كـ currentUser وتودّيه للأدمن أو للرئيسية حسب دوره
   function handleLogin(e) {
     e.preventDefault();
 

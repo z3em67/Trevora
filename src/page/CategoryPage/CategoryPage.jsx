@@ -6,14 +6,12 @@ import SlideProductLoading from "../../components/slideProducts/SlideProductLoad
 import PageTransition from "../../components/PageTransition";
 import { applyCatalog, customProductsFor } from "../../admin/adminStore";
 
-// صفحة القسم: بتعرض كل منتجات القسم المختار من الرابط (المضافة + منتجات الـ API)
 function CategoryPage() {
   const { category } = useParams();
 
   const [categoryProducts, setCategoryProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // كل ما القسم يتغير بنجيب منتجاته، ولو الـ API فشل بنعرض المنتجات المضافة بس
   useEffect(() => {
     setLoading(true);
     fetch(`https://dummyjson.com/products/category/${category}`)

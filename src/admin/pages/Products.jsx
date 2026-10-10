@@ -9,7 +9,6 @@ import { Modal, PageHead } from "../ui";
 const empty = { title: "", price: "", stock: "", category: "", brand: "", image: "", description: "" };
 const PAGE = 20;
 
-// صفحة إدارة المنتجات: بتجمع منتجات الـ API مع المنتجات المضافة وبتسمح بالبحث والفلتر والإضافة والتعديل والمسح
 export default function Products() {
   const [api, setApi] = useState([]);
   const [apiCats, setApiCats] = useState([]);
@@ -21,7 +20,6 @@ export default function Products() {
   const [shown, setShown] = useState(PAGE);
   const [form, setForm] = useState(null); // null | {product?, values}
 
-  // بنجيب المنتجات والأقسام من الـ API أول ما الصفحة تفتح
   useEffect(() => {
     Promise.all([
       fetch("https://dummyjson.com/products?limit=0&select=id,title,price,stock,category,thumbnail,brand,description").then((r) => r.json()),
@@ -32,26 +30,20 @@ export default function Products() {
       .finally(() => setLoading(false));
   }, []);
 
-  // قايمة الأقسام بعد الدمج مع إعدادات الأدمن
   const categories = useMemo(() => mergeCategories(apiCats), [apiCats, tick]);
-  // كل المنتجات: المضافة + منتجات الـ API بعد تطبيق المسح والتعديلات
   const all = useMemo(
     () => [...custom.map((p) => ({ ...p, custom: true })), ...applyCatalog(api)],
     [api, custom, tick]
   );
-  // المنتجات بعد الفلتر بالقسم والبحث
   const list = all.filter(
     (p) =>
       (cat === "all" || p.category === cat) &&
       `${p.title} ${p.brand || ""}`.toLowerCase().includes(q.toLowerCase())
   );
 
-  // بتعيد تحميل المنتجات المضافة وتجبر الحسابات تتحدّث بعد أي تعديل
   const refresh = () => { setCustom(getCustomProducts()); setTick((t) => t + 1); };
 
-  // بتفتح فورم إضافة منتج جديد بقيم فاضية
   const openAdd = () => setForm({ values: { ...empty, category: categories[0]?.slug || "" } });
-  // بتفتح فورم التعديل ومعبّي بيانات المنتج الحالية
   const openEdit = (p) =>
     setForm({
       product: p,
@@ -60,17 +52,14 @@ export default function Products() {
         brand: p.brand || "", image: p.thumbnail || p.images?.[0] || "", description: p.description || "",
       },
     });
-  // بتحدّث حقل واحد في قيم الفورم
   const set = (k, v) => setForm((f) => ({ ...f, values: { ...f.values, [k]: v } }));
 
-  // بترفع صورة وتصغّرها وتحطها في الفورم
   const upload = async (file) => {
     if (!file) return;
     try { set("image", await fileToDataUrl(file, 600)); }
     catch { toast.error("Could not read that image"); }
   };
 
-  // بتتأكد من البيانات ثم بتضيف المنتج أو تعدّله وتحدّث القايمة
   const save = () => {
     const v = form.values;
     if (!v.title.trim() || v.price === "" || !v.category) return toast.error("Title, price and category are required");
@@ -86,7 +75,6 @@ export default function Products() {
     }
   };
 
-  // بتمسح منتج بعد تأكيد وتحدّث القايمة
   const del = (p) => {
     if (!window.confirm(`Delete "${p.title}"?`)) return;
     removeProduct(p);

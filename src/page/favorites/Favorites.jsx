@@ -9,7 +9,6 @@ import '../CategoryPage/categorypage.css'
 
 
 
-// صفحة المفضلة: بتعرض المنتجات المحفوظة أو رسالة "مفيش مفضلة" لو فاضية
 function Favorites() {
     const {favorites} = useContext(CartContext)
 

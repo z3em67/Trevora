@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { LuSearch } from "react-icons/lu";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-// صندوق البحث في الهيدر: بيعرض اقتراحات منتجات وانت بتكتب وبيودّيك لصفحة النتايج
 function SerachBox() {
   const [serachTerm, setSerachTerm] = useState("");
   const [suggestions, setSuggestions] = useState([]);
@@ -10,7 +9,6 @@ function SerachBox() {
   const location = useLocation();
   const boxRef = useRef(null);
 
-  // بتتنفذ لما يعمل submit للفورم: لو في كلمة بحث بتودّيه لصفحة /search وبتقفل الاقتراحات
   const handleSbumit = (e) => {
     e.preventDefault();
     if (serachTerm.trim()) {
@@ -19,9 +17,7 @@ function SerachBox() {
     setSuggestions([]);
   };
 
-  
   useEffect(() => {
-    // بتبعت طلب بحث للـ API وبتاخد أول 5 نتايج بس كاقتراحات، ولو الخانة فاضية بتفضّي الاقتراحات
     const fetchSuggestions = async () => {
       if (!serachTerm.trim()) {
         setSuggestions([]);
@@ -40,14 +36,11 @@ function SerachBox() {
     return () => clearTimeout(debonuce);
   }, [serachTerm]);
 
-  // كل ما المسار يتغير بنقفل الاقتراحات
   useEffect(() => {
     setSuggestions([]);
   }, [location]);
 
-  // بنقفل الاقتراحات لو داس برّا صندوق البحث
   useEffect(() => {
-  
     const close = (e) => {
       if (boxRef.current && !boxRef.current.contains(e.target)) setSuggestions([]);
     };

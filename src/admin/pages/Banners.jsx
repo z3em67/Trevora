@@ -6,28 +6,23 @@ import { Modal, PageHead, Badge } from "../ui";
 
 const blank = { eyebrow: "", title: "", text: "", img: "", to: "/", active: true };
 
-// صفحة إدارة بانرات الصفحة الرئيسية: عرض / إضافة / تعديل / إخفاء / ترتيب / مسح / استرجاع الافتراضي
 export default function Banners() {
   const [banners, setBanners] = useState(() => getBanners() || DEFAULT_BANNERS);
   const [custom, setCustom] = useState(() => getBanners() !== null);
   const [form, setForm] = useState(null);
 
-  // بتحفظ قايمة البانرات وتحدّث الشاشة، ولو الـ storage مليان بتعرض رسالة خطأ وبترجّع false
   const commit = (list) => {
     try { saveBanners(list); setBanners(list); setCustom(true); return true; }
     catch { toast.error("Storage is full. Use a smaller image or an image URL."); return false; }
   };
-  // بتحدّث حقل واحد في الفورم
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
 
-  // بتاخد صورة مرفوعة وتحوّلها لـ data URL وتحطها في حقل الصورة
   const upload = async (file) => {
     if (!file) return;
     try { set("img", await fileToDataUrl(file, 1000)); }
     catch { toast.error("Could not read that image"); }
   };
 
-  // بتحفظ البانر (جديد أو معدّل) بعد ما تتأكد إن العنوان والصورة موجودين
   const save = () => {
     if (!form.title.trim() || !form.img) return toast.error("Title and image are required");
     const list = form.id
@@ -35,7 +30,6 @@ export default function Banners() {
       : [...banners, { ...form, id: Date.now() }];
     if (commit(list)) { toast.success("Banner saved"); setForm(null); }
   };
-  // بتحرّك البانر لفوق أو لتحت في الترتيب (i مكانه الحالي و d الاتجاه)
   const move = (i, d) => {
     const list = banners.slice();
     const j = i + d;
@@ -43,12 +37,10 @@ export default function Banners() {
     [list[i], list[j]] = [list[j], list[i]];
     commit(list);
   };
-  // بتمسح بانر بعد تأكيد من اليوزر
   const remove = (b) => {
     if (!window.confirm(`Delete "${b.title}"?`)) return;
     commit(banners.filter((x) => x.id !== b.id));
   };
-  // بترجّع البانرات الأصلية بعد تأكيد من اليوزر
   const reset = () => {
     if (!window.confirm("Restore the original banners?")) return;
     resetBanners(); setBanners(DEFAULT_BANNERS); setCustom(false);

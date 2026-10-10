@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-// صفحة إعداد بيانات المتجر للبائع بعد التسجيل: اسم المتجر ووصفه
 function SellerSetup() {
   const navigate = useNavigate();
 
@@ -9,29 +8,32 @@ function SellerSetup() {
     localStorage.getItem("currentUser")
   );
 
-  const [storeName, setStoreName] = useState("");
-  const [storeDescription, setStoreDescription] = useState("");
+  const [shopName, setShopName] = useState("");
+  const [description, setDescription] = useState("");
 
-  // بتتأكد إن اسم المتجر مكتوب، وبتحدّث بيانات المستخدم الحالي وقايمة المستخدمين، وبعدين تودّيه لصفحة البائع
   function handleSubmit(e) {
     e.preventDefault();
 
-    if (!storeName) {
-      alert("Please enter your store name.");
+    if (!shopName.trim()) {
+      alert("Please enter your shop name.");
       return;
     }
 
     const updatedUser = {
       ...currentUser,
-      storeName: storeName,
-      storeDescription: storeDescription,
+
+      // Seller information
+      shopName: shopName.trim(),
+      description: description.trim(),
     };
 
+    // Update current user
     localStorage.setItem(
       "currentUser",
       JSON.stringify(updatedUser)
     );
 
+    // Update user inside users array
     const users =
       JSON.parse(localStorage.getItem("users")) || [];
 
@@ -57,7 +59,7 @@ function SellerSetup() {
 
         <h1>Seller Information</h1>
 
-        <p>Complete your store information</p>
+        <p>Complete your shop information</p>
 
         <form
           className="auth_form"
@@ -66,18 +68,18 @@ function SellerSetup() {
 
           <input
             type="text"
-            placeholder="Store Name"
-            value={storeName}
+            placeholder="Shop Name"
+            value={shopName}
             onChange={(e) =>
-              setStoreName(e.target.value)
+              setShopName(e.target.value)
             }
           />
 
           <textarea
-            placeholder="Store Description"
-            value={storeDescription}
+            placeholder="Shop Description"
+            value={description}
             onChange={(e) =>
-              setStoreDescription(e.target.value)
+              setDescription(e.target.value)
             }
           />
 

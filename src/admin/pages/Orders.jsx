@@ -3,14 +3,12 @@ import toast from "react-hot-toast";
 import { getOrders, updateOrder, deleteOrder, ORDER_STATUSES } from "../adminStore";
 import { Badge, Modal, PageHead } from "../ui";
 
-// صفحة إدارة الأوردرات والشحن: بحث وفلتر بالحالة وتغيير الحالة بسرعة وتفاصيل الأوردر وبيانات الشحن
 export default function Orders() {
   const [orders, setOrders] = useState(getOrders);
   const [q, setQ] = useState("");
   const [status, setStatus] = useState("all");
   const [open, setOpen] = useState(null); // {order, status, ship}
 
-  // القايمة اللي بتتعرض: بعد الفلتر بالحالة والبحث (برقم الأوردر أو العميل أو رقم التتبع) ومترتبة من الأحدث
   const list = orders
     .filter((o) => status === "all" || (o.status || "Pending") === status)
     .filter((o) =>
@@ -19,17 +17,14 @@ export default function Orders() {
     )
     .slice().reverse();
 
-  // بتفتح تفاصيل الأوردر وتجهّز بيانات الشحن الحالية للتعديل
   const view = (o) =>
     setOpen({
       order: o,
       status: o.status || "Pending",
       ship: { carrier: "", trackingNumber: "", estimatedDelivery: "", note: "", ...(o.shippingInfo || {}) },
     });
-  // بتحدّث حقل واحد من بيانات الشحن
   const setShip = (k, v) => setOpen((s) => ({ ...s, ship: { ...s.ship, [k]: v } }));
 
-  // بتحفظ الحالة وبيانات الشحن، وبتسجل وقت الشحن/التسليم أول مرة تتغير الحالة ليهم
   const save = () => {
     const patch = { status: open.status, shippingInfo: open.ship };
     if (open.status === "Shipped" && !open.order.shippedAt) patch.shippedAt = new Date().toLocaleString();
@@ -38,17 +33,13 @@ export default function Orders() {
     toast.success("Order updated");
     setOpen(null);
   };
-  // تغيير سريع لحالة الأوردر من القايمة المنسدلة في الجدول
   const quick = (o, s) => { setOrders(updateOrder(o.id, { status: s })); toast.success(`Order #${o.id} → ${s}`); };
-  // بتمسح أوردر بعد تأكيد
   const remove = (o) => {
     if (!window.confirm(`Delete order #${o.id}?`)) return;
     setOrders(deleteOrder(o.id));
   };
 
-  // الأوردر المفتوح حاليًا (لو في)
   const o = open?.order;
-  // بيانات العميل بتاع الأوردر المفتوح
   const c = o?.customer || {};
 
   return (

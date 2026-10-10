@@ -3,7 +3,6 @@ import { LuShieldAlert } from "react-icons/lu";
 import { getCurrentUser } from "./adminStore";
 
 // Only lets admins in. NOTE: front-end only guard (data lives in localStorage).
-// حارس الصفحات: لو المستخدم أدمن بيعرض الصفحة، غير كده بيعرض رسالة "للأدمن بس" مع لينك لصفحة الدخول
 export default function AdminRoute({ children }) {
   const user = getCurrentUser();
   if (user?.role === "admin") return children;

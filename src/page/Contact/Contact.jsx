@@ -1,7 +1,6 @@
 import React from "react";
 import "./Contact.css";
 
-// صفحة التواصل: بيانات المتجر وفورم رسالة (شكل بس، مش بيبعت حاجة لسه)
 function Contact() {
   return (
     <div className="contact-page">

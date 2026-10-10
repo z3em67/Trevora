@@ -4,18 +4,15 @@ import { CartContext } from "../../components/context/CartContext";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 
-// بيانات المنتج: الاسم والتقييم والسعر والخصم والمخزون وأزرار السلة والمفضلة والمشاركة
 function ProductInfo({ product }) {
 
     const {cartItems , addToCart , increaseQuantity , decreaseQuantity , addToFavorites , favorites , removeFromFavorites} = useContext(CartContext)
 
-    // المنتج ده في السلة؟ لو آه بناخد منه الكمية الحالية
     const cartItem = cartItems.find(i => i.id === product.id);
     const isInCart = Boolean(cartItem);
 
     const navigate = useNavigate()
 
-    // بتضيف المنتج للسلة وتظهر إشعار فيه زرار يودّيك للسلة
     const handleAddToCart = () => {
         addToCart(product)
 
@@ -36,10 +33,8 @@ function ProductInfo({ product }) {
       }
 
   // favorites
-  // المنتج ده في المفضلة ولا لأ
   const isInFav = favorites.some(i => i.id === product.id);
 
-  // بتضيف المنتج للمفضلة أو تشيله منها حسب حالته الحالية، مع إشعار
   const handleAddToFav = () => {
     if(isInFav) {
       removeFromFavorites(product.id)
@@ -50,7 +45,6 @@ function ProductInfo({ product }) {
     }
    }
 
-  // بتشارك لينك الصفحة أو تنسخه لو المشاركة مش مدعومة
   const handleShare = async () => {
     const url = window.location.href
     try {
@@ -59,12 +53,9 @@ function ProductInfo({ product }) {
     } catch { /* share dismissed */ }
   }
 
-  // نسبة الخصم متقرّبة لأقرب رقم صحيح
   const discount = Math.round(product.discountPercentage || 0)
-  // السعر قبل الخصم
   const oldPrice = discount > 0 ? product.price / (1 - product.discountPercentage / 100) : null
   const status = product.availabilityStatus || ''
-  // بتحدد لون حالة التوفر: أحمر لو خلص، أصفر لو قليل، أخضر غير كده
   const statusClass = /out/i.test(status) ? 'bad' : /low/i.test(status) ? 'warn' : 'ok'
 
   return (

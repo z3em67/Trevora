@@ -33,8 +33,6 @@ import AdminProducts from "./admin/pages/Products";
 import AdminCategories from "./admin/pages/Categories";
 import AdminOrders from "./admin/pages/Orders";
 import AdminBanners from "./admin/pages/Banners";
-// الكومبوننت الرئيسي للتطبيق: بيرسم الهيدر والفوتر وبيعرّف كل الـ Routes بتاعة الصفحات
-// ولو احنا جوه صفحات الأدمن (/admin) بيخبّي الهيدر والفوتر العاديين
 function App() {
   const isAdminArea = useLocation().pathname.startsWith("/admin");
   return (
